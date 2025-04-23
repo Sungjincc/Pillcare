@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "318839391807",
+    "project_id": "dankook-project",
+    "storage_bucket": "dankook-project.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:318839391807:android:1fc71cc119cb81e3b01a8a",
+        "android_client_info": {
+          "package_name": "com.example.pillcare_capstone"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCTxMMVHqDXk82daEBoNh6NrEcKWhVNfaw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

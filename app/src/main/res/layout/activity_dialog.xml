@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:orientation="vertical"
+    android:padding="34dp"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    tools:context=".DialogActivity">
+
+        <TextView
+            android:id="@+id/dialogTitle"
+            android:text="@string/stringSetPillTime"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="16sp"
+            android:textColor="#000000"
+            android:layout_gravity="center_horizontal"
+            android:paddingBottom="16dp"/>
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:layout_gravity="center_horizontal">
+
+                <!-- 시 설정을 위한 NumberPicker -->
+                <NumberPicker
+                    android:id="@+id/hourPicker"
+                    android:divider="@color/mainColor"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+                <TextView
+                    android:text=":"
+                    android:textSize="24sp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="4dp" />
+
+                <!-- 분 설정을 위한 NumberPicker -->
+                <NumberPicker
+                    android:id="@+id/minutePicker"
+                    android:divider="@color/mainColor"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="end"
+            android:layout_marginTop="24dp">
+
+                <Button
+                    android:id="@+id/goToPreviousPageButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:backgroundTint="@color/white"
+                    android:textColor="@color/gray"
+                    android:textStyle="bold"
+                    android:text="@string/goToPreviousPage"
+                    android:layout_gravity="center"/>
+                <!-- 저장 버튼 -->
+                <Button
+                    android:id="@+id/successButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:backgroundTint="@color/white"
+                    android:text="@string/stringSuccess"
+                    android:textColor="@color/textMainColor"
+                    android:textStyle="bold"
+                    android:layout_marginStart="16dp"
+                    android:layout_gravity="center"/>
+
+        </LinearLayout>
+
+
+</androidx.appcompat.widget.LinearLayoutCompat>

@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true"
+    android:src="@drawable/logotwo">
+
+    <!--툴바-->
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:id="@+id/topToolBar"
+        android:layout_width="match_parent"
+        android:layout_height="110dp"
+        android:orientation="horizontal"
+        android:paddingTop="60dp"
+        android:gravity="center_horizontal"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/mainContainer"
+        android:background="@color/mainColor">
+
+        <ImageView
+            android:id="@+id/toolbarCareTargetImage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="10dp"
+            android:background="@drawable/ic_myinfo_selected"
+            android:contentDescription="@string/stringToolbarCareTargetImage"/>
+        <TextView
+            android:id="@+id/toolbarCareTargetNameText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:text="김단국 님"
+            android:textSize="17sp"
+            android:textColor="@color/black"/>
+        <TextView
+            android:id="@+id/toolbarFragmentName"
+            android:layout_width="60dp"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:layout_marginStart="55dp"
+            android:layout_marginEnd="125dp"
+            android:text="@string/stringHome"
+            android:textColor="@color/black"
+            android:textSize="18sp"
+            android:textStyle="bold"/>
+        <ImageButton
+            android:id="@+id/toolbarAlarmImageButton"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:background="@drawable/warning"
+            android:scaleType="centerInside"
+            android:contentDescription="@string/stringToolbarAlarmImageButton"/>
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+    <!--메인 화면-->
+    <FrameLayout
+        android:id="@+id/mainContainer"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toTopOf="@+id/bottomNavigationView"
+        app:layout_constraintEnd_toEndOf="@+id/bottomNavigationView"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/topToolBar"/>
+
+    <!--약 추가 버튼-->
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fabHome"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_plus"
+        android:padding="100dp"
+        android:backgroundTint="@color/mainColor"
+        app:layout_constraintBottom_toTopOf="@id/bottomNavigationView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:fabCustomSize="55dp"
+        android:visibility="gone"
+        android:contentDescription="@string/medicinePlusButton"/>
+
+    <!--바텀 네비게이션 뷰-->
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/bottomNavigationView"
+        android:layout_width="match_parent"
+        android:layout_height="110dp"
+        android:paddingTop="5dp"
+        app:itemIconSize="30dp"
+        app:itemIconTint="@color/menu_bottom_nav_color"
+        app:itemTextColor="@color/menu_bottom_nav_color"
+        app:labelVisibilityMode="labeled"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:menu="@menu/menu_bottom_nav" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

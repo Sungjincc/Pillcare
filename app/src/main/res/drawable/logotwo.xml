@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!-- 캡슐형 알약 (빨강) -->
+    <item android:bottom="100dp"  android:right="120dp">
+        <rotate xmlns:android="http://schemas.android.com/apk/res/android"
+            android:fromDegrees="130"
+            android:toDegrees="0">
+            <shape android:shape="rectangle">
+                <size
+                    android:width="10dp"
+                    android:height="50dp" />
+                <corners android:radius="130dp" />
+                <solid android:color="#9D4B4B" />
+                <stroke
+                    android:width="3dp"
+                    android:color="#000000" />
+            </shape>
+        </rotate>
+    </item>
+
+    <!-- 캡슐형 알약 (빨강) 대각선 라인 -->
+    <item android:bottom="100dp" android:right="140dp" android:left="20dp">
+        <rotate xmlns:android="http://schemas.android.com/apk/res/android"
+            android:fromDegrees="221"
+            android:toDegrees="0">
+            <shape android:shape="line">
+
+                <stroke android:width="6dp" android:color="#000000"/>
+            </shape>
+        </rotate>
+    </item>
+
+    <!-- 캡슐형 알약 (초록) -->
+    <item android:top="100dp"  android:left="120dp">
+        <rotate xmlns:android="http://schemas.android.com/apk/res/android"
+            android:fromDegrees="130"
+            android:toDegrees="0">
+            <shape android:shape="rectangle">
+                <size
+                    android:width="10dp"
+                    android:height="50dp" />
+                <corners android:radius="130dp" />
+                <solid android:color="#567A58" />
+                <stroke
+                    android:width="3dp"
+                    android:color="#000000" />
+            </shape>
+        </rotate>
+    </item>
+
+    <!-- 캡슐형 알약 (초록) 대각선 라인 -->
+    <item android:top="100dp" android:right="20dp" android:left="140dp">
+        <rotate xmlns:android="http://schemas.android.com/apk/res/android"
+            android:fromDegrees="221"
+            android:toDegrees="0">
+            <shape android:shape="line">
+
+                <stroke android:width="6dp" android:color="#000000"/>
+            </shape>
+        </rotate>
+    </item>
+
+    <!-- 원형 알약 (노랑) -->
+    <item android:bottom="80dp" android:left="140dp">
+            <shape android:shape="oval">
+                <size android:width="80dp" android:height="80dp"/>
+                <solid android:color="#E6DBAD"/>
+                <stroke android:width="3dp" android:color="#000000"/>
+            </shape>
+    </item>
+
+    <!-- 원형 알약 (노랑) 대각선 첫번째 라인  -->
+    <item android:bottom="81dp" android:left="142dp">
+        <rotate xmlns:android="http://schemas.android.com/apk/res/android"
+            android:fromDegrees="230"
+            android:toDegrees="3">
+            <shape android:shape="line">
+                <stroke android:width="3dp" android:color="#000000"/>
+            </shape>
+        </rotate>
+    </item>
+
+    <!-- 원형 알약 (노랑) 대각선 두번째 라인  -->
+    <item android:bottom="78dp" android:left="139dp">
+        <rotate xmlns:android="http://schemas.android.com/apk/res/android"
+            android:fromDegrees="230"
+            android:toDegrees="3">
+            <shape android:shape="line">
+                <stroke android:width="3dp" android:color="#000000"/>
+            </shape>
+        </rotate>
+    </item>
+
+
+    <!-- 원형 정제형 알약 (파랑) -->
+    <item android:top="80dp" android:right="140dp">
+        <shape android:shape="oval">
+            <size android:width="60dp" android:height="60dp"/>
+            <solid android:color="#ADD8E6"/> <!-- 연한 파랑 -->
+            <stroke android:width="3dp" android:color="#000000"/>
+        </shape>
+    </item>
+
+    <!-- 원형 알약 (파랑) 대각선 첫번째 라인 -->
+    <item android:top="81dp" android:right="142dp">
+        <rotate xmlns:android="http://schemas.android.com/apk/res/android"
+            android:fromDegrees="230"
+            android:toDegrees="0">
+            <shape android:shape="line">
+                <stroke android:width="3dp" android:color="#000000"/>
+            </shape>
+        </rotate>
+    </item>
+    <!-- 원형 알약 (파랑) 대각선 두번째 라인 -->
+    <item android:top="78dp" android:right="139dp">
+        <rotate xmlns:android="http://schemas.android.com/apk/res/android"
+            android:fromDegrees="230"
+            android:toDegrees="0">
+            <shape android:shape="line">
+                <stroke android:width="3dp" android:color="#000000"/>
+            </shape>
+        </rotate>
+    </item>
+
+</layer-list>
