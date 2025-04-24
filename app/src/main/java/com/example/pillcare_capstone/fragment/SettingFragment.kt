@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.example.pillcare_capstone.databinding.SettingFragmentBinding
+import com.example.pillcare_capstone.login.LoginActivity
 import com.example.pillcare_capstone.setting.*
 
 class SettingFragment : Fragment() {
@@ -51,6 +52,10 @@ class SettingFragment : Fragment() {
         }
         binding.settingLicense.setOnClickListener {
             val intent = Intent(requireActivity(),LicenseActivity::class.java)
+            startActivity(intent)
+        }
+        binding.settingLogoutEfab.setOnClickListener{
+            val intent = Intent(requireActivity(),LoginActivity::class.java)
             startActivity(intent)
         }
     }

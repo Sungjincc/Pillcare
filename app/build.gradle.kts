@@ -2,6 +2,7 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.google.gms.google.services)
+    alias(libs.plugins.kotlin.compose)
 }
 
 android {
@@ -34,9 +35,13 @@ android {
     kotlinOptions {
         jvmTarget = "11"
     }
+    composeOptions {
+        kotlinCompilerExtensionVersion = "1.5.3" // Compose 버전에 맞게 조정
+    }
 
     buildFeatures{
         viewBinding = true
+        compose =true
     }
 }
 
@@ -51,6 +56,13 @@ dependencies {
     implementation(libs.firebase.firestore.ktx)
     implementation(libs.firebase.vertexai)
     implementation("com.google.android.material:material:1.9.0")
+    implementation("androidx.compose.ui:ui:1.5.3")
+    implementation("androidx.compose.material:material:1.5.3")
+    implementation("androidx.compose.ui:ui-tooling-preview:1.5.3")
+    implementation("androidx.activity:activity-compose:1.8.0")
+    implementation(libs.androidx.material3.android)
+    debugImplementation("androidx.compose.ui:ui-tooling:1.5.3")
+    debugImplementation("androidx.compose.ui:ui-test-manifest:1.5.3")
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)

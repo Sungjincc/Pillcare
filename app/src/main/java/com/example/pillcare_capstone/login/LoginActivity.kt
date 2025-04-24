@@ -2,8 +2,10 @@ package com.example.pillcare_capstone.login
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.AppCompatButton
 import androidx.constraintlayout.widget.ConstraintLayout
 import com.example.pillcare_capstone.MainActivity
 import com.example.pillcare_capstone.R
@@ -14,7 +16,7 @@ import com.example.pillcare_capstone.sign_up.SignUpActivityOne
 class LoginActivity : AppCompatActivity() {
 
     private lateinit var findPasswordTextView : TextView
-    private lateinit var loginButton : Button
+    private lateinit var loginButton : AppCompatButton
     private lateinit var signUpLayout : ConstraintLayout
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -25,7 +27,7 @@ class LoginActivity : AppCompatActivity() {
     private fun initViews()
     {
         findPasswordTextView = findViewById(R.id.findPasswordTextView)
-        loginButton = findViewById(R.id.signUpSuccessButton)
+        loginButton = findViewById(R.id.loginButton)
         signUpLayout = findViewById(R.id.signupLayout)
     }
     private fun initListeners()
@@ -37,6 +39,10 @@ class LoginActivity : AppCompatActivity() {
         }
         findPasswordTextView.setOnClickListener{
             val intent = Intent(this@LoginActivity, FindPasswordActivityOne::class.java)
+            startActivity(intent)
+        }
+        loginButton.setOnClickListener {
+            val intent = Intent(this@LoginActivity,MainActivity::class.java)
             startActivity(intent)
         }
     }

@@ -1,15 +1,17 @@
 package com.example.pillcare_capstone.setting
 
 import android.os.Bundle
-import androidx.activity.enableEdgeToEdge
-import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
+import androidx.activity.ComponentActivity
+import androidx.activity.compose.setContent
+import androidx.core.content.ContextCompat
 import com.example.pillcare_capstone.R
 
-class ChangeMyInfoActivity : AppCompatActivity() {
+class ChangeMyInfoActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_change_my_info)
+        window.statusBarColor = ContextCompat.getColor(this, R.color.mainColor)
+        setContent {
+        }
     }
 }
+
