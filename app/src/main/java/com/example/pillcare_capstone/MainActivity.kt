@@ -65,6 +65,7 @@ class MainActivity : AppCompatActivity() {
                 else -> false
             }
         }
+
     }
 
     // FloatingActionButton 클릭 리스너
@@ -80,16 +81,15 @@ class MainActivity : AppCompatActivity() {
     private fun showFragment(fragment: Fragment) {
         if (fragment == activeFragment) return
 
-        updateBottomNavForFragment(fragment)
-        updateToolbarView(fragment)
-        supportFragmentManager.beginTransaction()
-            .hide(activeFragment)
-            .show(fragment)
-            .commit()
+        supportFragmentManager.beginTransaction().apply {
+            hide(activeFragment)
+            show(fragment)
+        }.commit()
 
         activeFragment = fragment
         updateBottomNavForFragment(fragment)
         updateToolbarView(fragment)
+
     }
 
     // FAB 및 BottomNavigationView 배경 상태 변경

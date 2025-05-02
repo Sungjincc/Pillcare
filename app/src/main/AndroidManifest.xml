@@ -25,10 +25,10 @@
             android:name=".setting.ChangePasswordActivity"
             android:exported="false" />
         <activity
-            android:name=".setting.ChangeCareTargetActivity"
+            android:name=".setting.change_care_target.ChangeCareTargetActivity"
             android:exported="false" />
         <activity
-            android:name=".setting.ChangeMyInfoActivity"
+            android:name=".setting.change_my_info.ChangeMyInfoActivity"
             android:exported="false" />
         <activity
             android:name=".DialogActivity"

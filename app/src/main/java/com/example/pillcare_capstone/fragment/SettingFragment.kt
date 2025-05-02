@@ -9,6 +9,9 @@ import androidx.fragment.app.Fragment
 import com.example.pillcare_capstone.databinding.SettingFragmentBinding
 import com.example.pillcare_capstone.login.LoginActivity
 import com.example.pillcare_capstone.setting.*
+import com.example.pillcare_capstone.setting.change_care_target.ChangeCareTargetActivity
+import com.example.pillcare_capstone.setting.change_my_info.ChangeMyInfoActivity
+
 
 class SettingFragment : Fragment() {
 
@@ -31,11 +34,11 @@ class SettingFragment : Fragment() {
     private fun setupListeners()
     {
         binding.settingChangeMyInfo.setOnClickListener {
-            val intent = Intent(requireActivity(), ChangeMyInfoActivity::class.java)
+           val intent = Intent(requireActivity(), ChangeMyInfoActivity::class.java)
             startActivity(intent)
         }
         binding.settingChangeCareTarget.setOnClickListener{
-            val intent = Intent(requireActivity(),ChangeCareTargetActivity::class.java)
+            val intent = Intent(requireActivity(), ChangeCareTargetActivity::class.java)
             startActivity(intent)
         }
         binding.settingChangePassword.setOnClickListener{
@@ -59,6 +62,7 @@ class SettingFragment : Fragment() {
             startActivity(intent)
         }
     }
+
 
     override fun onDestroyView() {
         super.onDestroyView()
