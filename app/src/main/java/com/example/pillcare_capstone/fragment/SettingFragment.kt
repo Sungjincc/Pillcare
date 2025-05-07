@@ -11,6 +11,8 @@ import com.example.pillcare_capstone.login.LoginActivity
 import com.example.pillcare_capstone.setting.*
 import com.example.pillcare_capstone.setting.change_care_target.ChangeCareTargetActivity
 import com.example.pillcare_capstone.setting.change_my_info.ChangeMyInfoActivity
+import com.example.pillcare_capstone.setting.change_password.ChangePasswordActivity
+import com.example.pillcare_capstone.setting.set_push_alarm.SetPushAlarmActivity
 
 
 class SettingFragment : Fragment() {
@@ -46,7 +48,7 @@ class SettingFragment : Fragment() {
             startActivity(intent)
         }
         binding.settingSetPushAlarm.setOnClickListener{
-            val intent = Intent(requireActivity(),SetPushAlarmActivity::class.java)
+            val intent = Intent(requireActivity(), SetPushAlarmActivity::class.java)
             startActivity(intent)
         }
         binding.settingVersionOfApp.setOnClickListener {
