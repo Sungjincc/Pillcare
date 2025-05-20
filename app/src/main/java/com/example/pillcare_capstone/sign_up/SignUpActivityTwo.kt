@@ -12,7 +12,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.pillcare_capstone.R
 import com.example.pillcare_capstone.adapter.*
 import com.example.pillcare_capstone.data_class.GuardianMemo
-import com.example.pillcare_capstone.data_class.UserInformation
+import com.example.pillcare_capstone.data_class.Userguardian
 import com.google.firebase.firestore.FirebaseFirestore
 
 class SignUpActivityTwo : AppCompatActivity() {
@@ -42,9 +42,9 @@ class SignUpActivityTwo : AppCompatActivity() {
         val careTargetPhoneNumber = careTargetPhoneNumberEditText.text.toString()
         val guardianMemoList = adapter.getMemoList()
 
-        val user = UserInformation(
+        val user = Userguardian(
             name = name,
-            userId = userId,
+            ID = userId,
             phoneNumber = phoneNumber,
             password = password,
             careTargetName = careTargetName,
