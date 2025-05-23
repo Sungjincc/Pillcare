@@ -3,7 +3,6 @@ package com.example.pillcare_capstone.adapter
 import android.app.Dialog
 import android.graphics.Color
 import android.graphics.drawable.Drawable
-import android.util.Log
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
@@ -186,11 +185,15 @@ class MedicinePlusAdapter(
                     dialog.dismiss()
                 }
                 .create()
-                cancelDialog.setOnShowListener {
-                cancelDialog.getButton(AlertDialog.BUTTON_POSITIVE)?.setTextColor(ContextCompat.getColor(context, R.color.textMainColor))
-                cancelDialog.getButton(AlertDialog.BUTTON_NEGATIVE)?.setTextColor(ContextCompat.getColor(context, R.color.gray))
+
+            cancelDialog.setOnShowListener {
+                cancelDialog.getButton(AlertDialog.BUTTON_POSITIVE)
+                    ?.setTextColor(ContextCompat.getColor(context, R.color.textMainColor))
+                cancelDialog.getButton(AlertDialog.BUTTON_NEGATIVE)
+                    ?.setTextColor(ContextCompat.getColor(context, R.color.gray))
             }
-                cancelDialog.show()
+
+            cancelDialog.show()
         }
 
     }
