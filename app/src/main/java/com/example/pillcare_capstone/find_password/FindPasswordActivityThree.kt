@@ -3,31 +3,24 @@ package com.example.pillcare_capstone.find_password
 import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.widget.AppCompatButton
-import com.example.pillcare_capstone.R
+import com.example.pillcare_capstone.databinding.ActivityFindPasswordThreeBinding
 import com.example.pillcare_capstone.login.LoginActivity
 
 class FindPasswordActivityThree : AppCompatActivity() {
 
-    private lateinit var changePasswordSuccessButton : AppCompatButton
+    private lateinit var binding: ActivityFindPasswordThreeBinding
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_find_password_three)
+        binding = ActivityFindPasswordThreeBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
-        initViews()
         setupListeners()
     }
 
-    private fun initViews()
-    {
-        changePasswordSuccessButton = findViewById(R.id.changePasswordSuccessButton)
-    }
-
-    private fun setupListeners()
-    {
-        changePasswordSuccessButton.setOnClickListener {
-            val intent = Intent(this@FindPasswordActivityThree,LoginActivity::class.java)
-            startActivity(intent)
+    private fun setupListeners() {
+        binding.changePasswordSuccessButton.setOnClickListener {
+            startActivity(Intent(this, LoginActivity::class.java))
         }
     }
 }

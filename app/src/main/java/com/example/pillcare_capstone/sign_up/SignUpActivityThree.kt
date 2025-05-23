@@ -3,33 +3,25 @@ package com.example.pillcare_capstone.sign_up
 import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.widget.AppCompatButton
+import com.example.pillcare_capstone.databinding.ActivitySignUpThreeBinding
 import com.example.pillcare_capstone.login.LoginActivity
-import com.example.pillcare_capstone.R
 
 class SignUpActivityThree : AppCompatActivity() {
 
-    private lateinit var  signUpSuccessButton : AppCompatButton
+    private lateinit var binding: ActivitySignUpThreeBinding
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_sign_up_three)
+        binding = ActivitySignUpThreeBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
-
-        initViews()
         initListeners()
-
     }
 
-    private fun initViews()
-    {
-        signUpSuccessButton = findViewById(R.id.signUpSuccessButton)
-    }
-
-    private fun initListeners()
-    {
-        signUpSuccessButton.setOnClickListener{
+    private fun initListeners() {
+        binding.signUpSuccessButton.setOnClickListener {
             val intent = Intent(this@SignUpActivityThree, LoginActivity::class.java)
-            this.startActivity(intent)
+            startActivity(intent)
             finish()
         }
     }
