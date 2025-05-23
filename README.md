@@ -1,4 +1,7 @@
-secret_keys.xml 파일을 직접 생성해야함
+### secret_keys.xml 파일 설정 방법
+
+이 프로젝트는 민감한 인증 정보를 Git에 포함하지 않도록 구성되어 있습니다.  
+따라서 `secret_keys.xml` 파일을 직접 생성해야 합니다.
 
 1.res/values/secret_keys.xml.template 파일을 확인
 2.해당 파일을 복사하여 같은 위치에 secret_keys.xml로 저장
