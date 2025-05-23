@@ -5,7 +5,7 @@
 
 1.Project/config/secret_keys.xml.template 파일을 확인
 
-2.해당 파일을 복사하여 같은 위치에 secret_keys.xml로 저장
+2.해당 파일을 복사하여 app/src/main/res/values/secret_keys.xml로 저장
 
 3.템플릿의 [YOUR_CLIENT_ID] 등 placeholder를 실제 발급받은 키 값으로 변경
 
