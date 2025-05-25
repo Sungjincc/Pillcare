@@ -161,6 +161,8 @@ class MedicinePlusAdapter(
                 val selectedHour = hourPicker.value.toString().padStart(2, '0')
                 val selectedMinute = minutePicker.value.toString().padStart(2, '0')
                 viewHolder.setMedicineTimeEfab.text = "$selectedHour:$selectedMinute"
+
+
                 dialog.dismiss()
             }
 
@@ -169,6 +171,8 @@ class MedicinePlusAdapter(
 
         // 약 추가 완료 버튼 클릭
         viewHolder.medicinePlusSuccessButton.setOnClickListener{
+            item.medicineName = viewHolder.medicineNameEditText.text.toString()
+            item.alarmTime = viewHolder.setMedicineTimeEfab.text.toString()
             viewHolder.setDisableEditMode()
             timeAdapter.setClickable(false)
 
