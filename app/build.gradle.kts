@@ -68,6 +68,8 @@ dependencies {
     implementation("androidx.compose.material:material-icons-extended")
     implementation(libs.androidx.foundation.layout.android)
     implementation(libs.androidx.foundation.android)
+    implementation("com.squareup.retrofit2:retrofit:2.9.0")
+    implementation("com.squareup.retrofit2:converter-gson:2.9.0")
     implementation("com.airbnb.android:lottie:5.0.3")
     implementation("com.navercorp.nid:oauth:5.10.0") {
         exclude(group = "org.jetbrains.kotlin", module = "kotlin-stdlib")
