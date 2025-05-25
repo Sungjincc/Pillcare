@@ -2,6 +2,7 @@ package com.example.pillcare_capstone.utils
 
 import com.example.pillcare_capstone.data_class.MedicinePlus
 import com.example.pillcare_capstone.data_class.MedicineScheduleRequest
+import com.example.pillcare_capstone.data_class.ScheduleTime
 
 fun convertKoreanDaysToEnglish(koreanDays: List<String>): List<String> {
     val dayMap = mapOf(
@@ -12,17 +13,34 @@ fun convertKoreanDaysToEnglish(koreanDays: List<String>): List<String> {
 }
 
 fun MedicinePlus.toRequest(userId: Int): MedicineScheduleRequest {
-    val allDays = this.selectedDays.toMutableSet()
-    this.timeList.forEach {
-        allDays.addAll(it.selectedDays)
+    val schedules = mutableListOf<ScheduleTime>()
+
+    // 맨 위 alarmTime + selectedDays (통합 사용 시)
+    if (this.alarmTime.isNotBlank() && this.selectedDays.isNotEmpty()) {
+        schedules.add(
+            ScheduleTime(
+                time = this.alarmTime,
+                daysOfWeek = convertKoreanDaysToEnglish(this.selectedDays)
+            )
+        )
     }
 
-    val allTimes = this.timeList.map { it.alarmTime }
+    // 리스트 기반 시간들
+    this.timeList.forEach { timeItem ->
+        if (timeItem.alarmTime.isNotBlank()) {
+            schedules.add(
+                ScheduleTime(
+                    time = timeItem.alarmTime,
+                    daysOfWeek = convertKoreanDaysToEnglish(timeItem.selectedDays)
+                )
+            )
+        }
+    }
 
     return MedicineScheduleRequest(
         userId = userId,
         medicineName = this.medicineName,
-        daysOfWeek = convertKoreanDaysToEnglish(allDays.toList()),
-        times = allTimes
+        schedules = schedules,
+        pillCaseColor = this.pillCaseColor?.name?.lowercase() ?: "unknown"
     )
 }

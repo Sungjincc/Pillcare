@@ -4,11 +4,16 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.pillcare_capstone.R
 import com.example.pillcare_capstone.adapter.MedicinePlusAdapter
 import com.example.pillcare_capstone.data_class.MedicinePlus
+import com.example.pillcare_capstone.data_class.PillCaseColor
 import com.example.pillcare_capstone.databinding.HomeFragmentBinding
+import com.example.pillcare_capstone.utils.DialogUtils
+import com.example.pillcare_capstone.utils.PillCaseColorSelector
 
 class HomeFragment : Fragment() {
 
@@ -46,9 +51,20 @@ class HomeFragment : Fragment() {
     }
 
     fun addNewMedicineItem() {
-        medicinePlusList.add(MedicinePlus())
-        adapter.notifyItemInserted(medicinePlusList.size - 1)
-        binding.recyclerViewHome.scrollToPosition(medicinePlusList.size - 1)
+        if (medicinePlusList.size >= 3) {
+            DialogUtils.showLimitReachedDialog(requireContext())
+            return
+        }
+
+        val usedColors = medicinePlusList.mapNotNull { it.pillCaseColor }.toSet()
+        PillCaseColorSelector.showColorSelectionDialog(
+            context = requireContext(),
+            usedColors = usedColors
+        ) { newItem ->
+            medicinePlusList.add(newItem)
+            adapter.notifyItemInserted(medicinePlusList.size - 1)
+            binding.recyclerViewHome.scrollToPosition(medicinePlusList.size - 1)
+        }
     }
 
 
