@@ -5,7 +5,6 @@ import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import com.example.pillcare_capstone.MainActivity
-import com.example.pillcare_capstone.R
 import com.example.pillcare_capstone.databinding.ActivityLoginBinding
 import com.example.pillcare_capstone.find_password.FindPasswordActivityOne
 import com.example.pillcare_capstone.sign_up.SignUpActivityOne
@@ -26,12 +25,6 @@ class LoginActivity : AppCompatActivity() {
         binding = ActivityLoginBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        NaverIdLoginSDK.initialize(
-            context = this,
-            getString(R.string.naver_client_id),
-            getString(R.string.naver_client_secret),
-            getString(R.string.naver_client_name)
-        )
 
         initListeners()
     }

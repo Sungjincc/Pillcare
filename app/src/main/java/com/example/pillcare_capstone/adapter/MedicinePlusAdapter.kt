@@ -3,27 +3,33 @@ package com.example.pillcare_capstone.adapter
 import android.app.Dialog
 import android.graphics.Color
 import android.graphics.drawable.Drawable
-import android.util.Log
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
+import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.widget.AppCompatButton
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.pillcare_capstone.R
+import com.example.pillcare_capstone.data_class.MedicinePlus
 import com.example.pillcare_capstone.data_class.MedicineTimePlus
-import com.example.pillcare_capstone.data_class.MedicineTimePlusTime
 import com.example.pillcare_capstone.databinding.ActivityDialogBinding
 import com.example.pillcare_capstone.databinding.MedicinePlusListBinding
+import com.example.pillcare_capstone.network.RetrofitClient
+import com.example.pillcare_capstone.utils.toRequest
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 
 //mainActivity.kt에서 사용하는 리사이클러뷰 어댑터
 class MedicinePlusAdapter(
-    var medicinePlusList: MutableList<MedicineTimePlus>,
+    var medicinePlusList: MutableList<MedicinePlus>,
     private var inflater: LayoutInflater
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
@@ -43,7 +49,6 @@ class MedicinePlusAdapter(
         init {
             itemView.setOnClickListener {
                 val position: Int = adapterPosition
-                val guardianMemo = medicinePlusList[position]
             }
         }
         // 수정 불가 기능
@@ -123,7 +128,7 @@ class MedicinePlusAdapter(
 
         // 약 시간 추가 버튼 클릭
         viewHolder.medicineTimePlusFab.setOnClickListener {
-            item.timeList.add(MedicineTimePlusTime())
+            item.timeList.add(MedicineTimePlus())
             timeAdapter.notifyItemInserted(item.timeList.size - 1)
         }
 
@@ -164,6 +169,25 @@ class MedicinePlusAdapter(
         viewHolder.medicinePlusSuccessButton.setOnClickListener{
             viewHolder.setDisableEditMode()
             timeAdapter.setClickable(false)
+
+            val request = item.toRequest(userId = 1)
+
+            CoroutineScope(Dispatchers.IO).launch {
+                try {
+                    val response = RetrofitClient.apiService.sendSchedule(request)
+                    withContext(Dispatchers.Main) {
+                        if (response.isSuccessful) {
+                            Toast.makeText(viewHolder.itemView.context, "저장 성공", Toast.LENGTH_SHORT).show()
+                        } else {
+                            Toast.makeText(viewHolder.itemView.context, "서버 오류", Toast.LENGTH_SHORT).show()
+                        }
+                    }
+                } catch (e: Exception) {
+                    withContext(Dispatchers.Main) {
+                        Toast.makeText(viewHolder.itemView.context, "전송 실패", Toast.LENGTH_SHORT).show()
+                    }
+                }
+            }
         }
         //약 수정 버튼 클릭
         viewHolder.medicineModifyEfab.setOnClickListener{
@@ -186,11 +210,15 @@ class MedicinePlusAdapter(
                     dialog.dismiss()
                 }
                 .create()
-                cancelDialog.setOnShowListener {
-                cancelDialog.getButton(AlertDialog.BUTTON_POSITIVE)?.setTextColor(ContextCompat.getColor(context, R.color.textMainColor))
-                cancelDialog.getButton(AlertDialog.BUTTON_NEGATIVE)?.setTextColor(ContextCompat.getColor(context, R.color.gray))
+
+            cancelDialog.setOnShowListener {
+                cancelDialog.getButton(AlertDialog.BUTTON_POSITIVE)
+                    ?.setTextColor(ContextCompat.getColor(context, R.color.textMainColor))
+                cancelDialog.getButton(AlertDialog.BUTTON_NEGATIVE)
+                    ?.setTextColor(ContextCompat.getColor(context, R.color.gray))
             }
-                cancelDialog.show()
+
+            cancelDialog.show()
         }
 
     }

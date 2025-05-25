@@ -1,21 +1,20 @@
 package com.example.pillcare_capstone.fragment
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.pillcare_capstone.adapter.MedicinePlusAdapter
-import com.example.pillcare_capstone.data_class.MedicineTimePlus
+import com.example.pillcare_capstone.data_class.MedicinePlus
 import com.example.pillcare_capstone.databinding.HomeFragmentBinding
 
 class HomeFragment : Fragment() {
 
     private var _binding: HomeFragmentBinding? = null
     private val binding get() = _binding!!
-    private val medicinePlusList = mutableListOf<MedicineTimePlus>()
+    private val medicinePlusList = mutableListOf<MedicinePlus>()
     private lateinit var adapter: MedicinePlusAdapter
 
     override fun onCreateView(
@@ -47,7 +46,7 @@ class HomeFragment : Fragment() {
     }
 
     fun addNewMedicineItem() {
-        medicinePlusList.add(MedicineTimePlus())
+        medicinePlusList.add(MedicinePlus())
         adapter.notifyItemInserted(medicinePlusList.size - 1)
         binding.recyclerViewHome.scrollToPosition(medicinePlusList.size - 1)
     }
