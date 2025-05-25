@@ -40,6 +40,7 @@ fun MedicinePlus.toRequest(userId: Int): MedicineScheduleRequest {
     return MedicineScheduleRequest(
         userId = userId,
         medicineName = this.medicineName,
-        schedules = schedules
+        schedules = schedules,
+        pillCaseColor = this.pillCaseColor?.name?.lowercase() ?: "unknown"
     )
 }

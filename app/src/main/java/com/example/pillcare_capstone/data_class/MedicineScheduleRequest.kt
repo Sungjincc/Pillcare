@@ -8,5 +8,6 @@ data class ScheduleTime(
 data class MedicineScheduleRequest(
     val userId: Int,
     val medicineName: String,
-    val schedules: List<ScheduleTime>
+    val schedules: List<ScheduleTime>,
+    val pillCaseColor: String
 )
