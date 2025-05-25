@@ -14,15 +14,15 @@ import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.pillcare_capstone.R
+import com.example.pillcare_capstone.data_class.MedicinePlus
 import com.example.pillcare_capstone.data_class.MedicineTimePlus
-import com.example.pillcare_capstone.data_class.MedicineTimePlusTime
 import com.example.pillcare_capstone.databinding.ActivityDialogBinding
 import com.example.pillcare_capstone.databinding.MedicinePlusListBinding
 
 
 //mainActivity.kt에서 사용하는 리사이클러뷰 어댑터
 class MedicinePlusAdapter(
-    var medicinePlusList: MutableList<MedicineTimePlus>,
+    var medicinePlusList: MutableList<MedicinePlus>,
     private var inflater: LayoutInflater
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
@@ -42,7 +42,6 @@ class MedicinePlusAdapter(
         init {
             itemView.setOnClickListener {
                 val position: Int = adapterPosition
-                val guardianMemo = medicinePlusList[position]
             }
         }
         // 수정 불가 기능
@@ -122,7 +121,7 @@ class MedicinePlusAdapter(
 
         // 약 시간 추가 버튼 클릭
         viewHolder.medicineTimePlusFab.setOnClickListener {
-            item.timeList.add(MedicineTimePlusTime())
+            item.timeList.add(MedicineTimePlus())
             timeAdapter.notifyItemInserted(item.timeList.size - 1)
         }
 

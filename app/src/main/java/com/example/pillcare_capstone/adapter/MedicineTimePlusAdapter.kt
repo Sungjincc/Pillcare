@@ -8,13 +8,13 @@ import androidx.appcompat.widget.AppCompatButton
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.example.pillcare_capstone.R
-import com.example.pillcare_capstone.data_class.MedicineTimePlusTime
+import com.example.pillcare_capstone.data_class.MedicineTimePlus
 import com.example.pillcare_capstone.databinding.ActivityDialogBinding
 import com.example.pillcare_capstone.databinding.MedicineTimePlusListBinding
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
 
 class MedicineTimePlusAdapter(
-    private val timeList: MutableList<MedicineTimePlusTime>,
+    private val timeList: MutableList<MedicineTimePlus>,
     private val inflater: LayoutInflater,
     private var isClickable : Boolean =true
 ) : RecyclerView.Adapter<MedicineTimePlusAdapter.TimeViewHolder>() {

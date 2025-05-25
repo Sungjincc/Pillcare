@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
+
     <uses-permission android:name="android.permission.INTERNET" />
+
     <application
         android:name=".MyApp"
         android:allowBackup="true"
@@ -69,10 +71,12 @@
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
+
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
 
-                <data android:host="oauth"
+                <data
+                    android:host="oauth"
                     android:scheme="kakao62ca08685b9bef1f66c44a861b12ad17" />
             </intent-filter>
         </activity>
