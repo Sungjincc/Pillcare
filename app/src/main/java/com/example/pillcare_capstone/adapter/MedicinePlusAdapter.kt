@@ -3,6 +3,7 @@ package com.example.pillcare_capstone.adapter
 import android.app.Dialog
 import android.graphics.Color
 import android.graphics.drawable.Drawable
+import android.util.Log
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
@@ -21,6 +22,7 @@ import com.example.pillcare_capstone.databinding.ActivityDialogBinding
 import com.example.pillcare_capstone.databinding.MedicinePlusListBinding
 import com.example.pillcare_capstone.network.RetrofitClient
 import com.example.pillcare_capstone.utils.toRequest
+import com.google.gson.Gson
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -171,7 +173,7 @@ class MedicinePlusAdapter(
             timeAdapter.setClickable(false)
 
             val request = item.toRequest(userId = 1)
-
+            Log.d("DEBUG_JSON", Gson().toJson(request))
             CoroutineScope(Dispatchers.IO).launch {
                 try {
                     val response = RetrofitClient.apiService.sendSchedule(request)
