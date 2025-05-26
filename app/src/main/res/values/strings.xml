@@ -67,4 +67,5 @@
     <string name="stringVersionOfApp">앱 버전 정보</string>
     <string name="stringLicense">오픈소스 라이선스</string>
     <string name="stringLogout">로그아웃</string>
+    <string name="stringConfirm">확인</string>
 </resources>
