@@ -3,6 +3,7 @@ package com.example.pillcare_capstone.network
 
 
 import com.example.pillcare_capstone.data_class.MedicineScheduleRequest
+import com.example.pillcare_capstone.data_class.Userguardian
 import retrofit2.Response
 import retrofit2.http.*
 
@@ -15,4 +16,7 @@ interface ApiService {
 
     @DELETE("api/medicine-schedule/{id}")
     suspend fun deleteSchedule(@Path("id") medicineId: Int): Response<Void>
+
+    @POST("guardian/signup")
+    suspend fun registerGuardian(@Body user: Userguardian): Response<Void>
 }

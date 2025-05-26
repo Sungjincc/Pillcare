@@ -1,5 +1,7 @@
 package com.example.pillcare_capstone.adapter
 
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -43,6 +45,18 @@ class GuardianMemoAdapter(
         val memo = guardianMemoList[position]
         viewHolder.guardianMemoItemEditText.setText(memo.content)
 
+        // ✅ EditText 값이 변경될 때마다 리스트에 반영
+        viewHolder.guardianMemoItemEditText.addTextChangedListener(object : TextWatcher {
+            override fun afterTextChanged(s: Editable?) {
+                val currentPosition = holder.adapterPosition
+                if (currentPosition != RecyclerView.NO_POSITION) {
+                    guardianMemoList[currentPosition].content = s.toString()
+                }
+            }
+
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
+        })
     }
 
     override fun getItemCount(): Int {
