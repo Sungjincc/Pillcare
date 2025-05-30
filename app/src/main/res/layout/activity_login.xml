@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main"
@@ -9,270 +9,286 @@
     app:errorEnabled="true"
     tools:context=".login.LoginActivity">
 
-    <!-- PILLCARE  -->
-    <TextView
-        android:id="@+id/loginTitlePillcare"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintVertical_bias="0.15"
-        android:text="@string/pillCare"
-        android:textSize="60dp"
-        android:textColor="@color/mainColor"
-        android:shadowColor="@color/black"
-        android:shadowDx="5.0"
-        android:shadowRadius="17.0"
-        android:fontFamily="@font/luckiestguy_regular"/>
-
-    <!-- 아이디  -->
-    <com.google.android.material.textfield.TextInputLayout
-
-        android:id="@+id/idLayout"
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@drawable/white_inputbox"
-        app:layout_constraintBottom_toBottomOf="@+id/passwordLayout"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/loginTitlePillcare"
-        app:layout_constraintVertical_bias="0.7"
-        android:elevation="5dp"
-        android:layout_marginHorizontal="23dp"
-        android:paddingHorizontal="10dp"
-        android:paddingBottom="5dp"
-        app:hintTextColor="@android:color/transparent"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
-
-        <EditText
-            android:id="@+id/idEditText"
-            android:background="@color/white"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:inputType="text"
-            android:hint="@string/stringId"
-            android:textSize="15sp"
-            />
-    </com.google.android.material.textfield.TextInputLayout>
-
-    <!-- 비밀번호 -->
-
-    <com.google.android.material.textfield.TextInputLayout
-
-        android:id="@+id/passwordLayout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@drawable/white_inputbox"
-        app:layout_constraintBottom_toBottomOf="@+id/findPasswordTextView"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/idLayout"
-        app:layout_constraintVertical_bias="0.2"
-        android:elevation="5dp"
-        android:layout_marginHorizontal="23dp"
-        android:paddingHorizontal="10dp"
-        android:paddingBottom="5dp"
-        app:endIconMode="password_toggle"
-        app:endIconTint="@color/gray"
-        app:hintTextColor="@android:color/transparent"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
-
-        <EditText
-            android:id="@+id/passwordEditText"
-            android:background="@color/white"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:inputType="textPassword"
-            android:hint="@string/stringPasswrod"
-            android:textSize="15sp"
-            />
-    </com.google.android.material.textfield.TextInputLayout>
-
-    <!-- 아이디 비밀번호 잘못입력시 텍스트  -->
-    <TextView
-        android:id="@+id/invaildText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:visibility="gone"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/passwordLayout"
-        app:layout_constraintBottom_toTopOf="@+id/loginTitlePillcare"
-        android:layout_marginLeft="23dp"
-        app:layout_constraintVertical_bias="0.4"
-        android:text="@string/errorIdOrPassword"
-        android:textStyle="bold"
-        android:textSize="10dp"
-        android:textColor="#BA0404"
-        android:shadowColor="#B0B0B0"
-        android:shadowRadius="1"
-        android:shadowDx="2"
-        android:shadowDy="2"
-        />
-    <!-- 비밀번호 찾기  -->
-    <TextView
-        android:id="@+id/findPasswordTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="5dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/passwordLayout"
-        app:layout_constraintBottom_toTopOf="@+id/loginButton"
-        android:layout_marginRight="23dp"
-        android:text="@string/findPasswordTextTitleText"
-        android:textStyle="bold"
-        android:textColor="#000000"
-        android:shadowColor="#B0B0B0"
-        android:shadowRadius="1"
-        android:shadowDx="2"
-        android:shadowDy="2"
-        />
-
-    <!-- 로그인  -->
-    <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/loginButton"
-        android:layout_width="match_parent"
-        android:layout_height="48dp"
-        android:background="@drawable/main_color_inputbox"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/findPasswordTextView"
-        app:layout_constraintBottom_toTopOf="@+id/orPlusline"
-        app:layout_constraintVertical_bias="0.6"
-        android:layout_marginHorizontal="60dp"
-        android:layout_marginTop="20dp"
-        android:text="@string/stringLogin"
-        android:textColor="@color/white"
-        android:textSize="18dp"
-        android:textStyle="bold" />
-
-    <!-- Or  -->
-    <LinearLayout
-        android:id="@+id/orPlusline"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/loginButton"
-        android:layout_marginTop="30dp"
-        android:orientation="horizontal"
-        android:gravity="center"
-        android:padding="8dp">
-
-        <View
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_height="1dp"
-            android:background="#CCCCCC" />
-
+        android:layout_height="wrap_content">
+        <!-- PILLCARE  -->
         <TextView
+            android:id="@+id/loginTitlePillcare"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/stringOr"
-            android:textSize="20dp"
-            android:textColor="#666666"
-            android:paddingHorizontal="8dp" />
-
-        <View
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_height="1dp"
-            android:background="#CCCCCC" />
-
-    </LinearLayout>
-
-    <!-- 카카오톡,네이버  -->
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/socialLoginLayout"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@+id/orPlusline"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="16dp">
-
-        <!-- 카카오 로그인 버튼 -->
-        <ImageButton
-            android:id="@+id/kakaoButton"
-            android:layout_width="64dp"
-            android:layout_height="64dp"
-            android:src="@drawable/kakaotalk_image"
-            android:scaleType="centerCrop"
-            android:background="@drawable/white_inputbox"
-            android:padding="5dp"
-            android:elevation="8dp"
+            app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toStartOf="@id/naverButton"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintHorizontal_chainStyle="packed"
-            android:contentDescription="@string/loginToKaKaoTalk" />
-
-        <!-- 네이버 로그인 버튼 -->
-        <ImageButton
-            android:id="@+id/naverButton"
-            android:layout_width="64dp"
-            android:layout_height="64dp"
-            android:src="@drawable/naver_image"
-            android:scaleType="centerCrop"
-            android:background="@drawable/white_inputbox"
-            android:padding="1dp"
-            android:elevation="8dp"
-            app:layout_constraintStart_toEndOf="@id/kakaoButton"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintHorizontal_chainStyle="packed"
-            android:layout_marginStart="20dp"
-            android:contentDescription="@string/loginToNaver"/>
-    </androidx.constraintlayout.widget.ConstraintLayout>
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintVertical_bias="0.15"
+            android:text="@string/pillCare"
+            android:textSize="60dp"
+            android:textColor="@color/mainColor"
+            android:shadowColor="@color/black"
+            android:shadowDx="5.0"
+            android:shadowRadius="17.0"
+            android:fontFamily="@font/luckiestguy_regular"/>
 
-    <!-- 계정이 없으신가요? 회원가입  -->
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/signupLayout"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:layout_marginEnd="15dp"
-        app:layout_constraintTop_toBottomOf="@id/socialLoginLayout"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_chainStyle="packed">
-
-        <!-- 계정이 없으신가요 -->
         <TextView
-            android:id="@+id/signup_text"
+            android:id="@+id/errorTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/dontHaveAccount"
-            android:textSize="18dp"
-            android:textColor="#666666"
-            android:shadowColor="#03B0B0B0"
-            android:shadowRadius="0.5"
+            android:visibility="gone"
+            android:textColor="@color/red"
+            android:textSize="10dp"
+            app:layout_constraintBottom_toTopOf="@+id/idLayout"
+            app:layout_constraintStart_toStartOf="@+id/idLayout"
+            android:layout_marginBottom="10dp"
+            android:layout_marginStart="10dp"/>
+        <!-- 아이디  -->
+        <com.google.android.material.textfield.TextInputLayout
+
+            android:id="@+id/idLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/white_inputbox"
+            app:layout_constraintBottom_toBottomOf="@+id/passwordLayout"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/loginTitlePillcare"
+            app:layout_constraintVertical_bias="0.7"
+            android:elevation="5dp"
+            android:layout_marginHorizontal="23dp"
+            android:paddingHorizontal="10dp"
+            android:paddingBottom="5dp"
+            app:hintTextColor="@android:color/transparent"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+
+            <EditText
+                android:id="@+id/idEditText"
+                android:background="@color/white"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:inputType="text"
+                android:hint="@string/stringId"
+                android:textSize="15sp"
+                />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <!-- 비밀번호 -->
+
+        <com.google.android.material.textfield.TextInputLayout
+
+            android:id="@+id/passwordLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/white_inputbox"
+            app:layout_constraintBottom_toBottomOf="@+id/findPasswordTextView"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/idLayout"
+            app:layout_constraintVertical_bias="0.2"
+            android:elevation="5dp"
+            android:layout_marginHorizontal="23dp"
+            android:paddingHorizontal="10dp"
+            android:paddingBottom="5dp"
+            app:endIconMode="password_toggle"
+            app:endIconTint="@color/gray"
+            app:hintTextColor="@android:color/transparent"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+
+            <EditText
+                android:id="@+id/passwordEditText"
+                android:background="@color/white"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:inputType="textPassword"
+                android:hint="@string/stringPasswrod"
+                android:textSize="15sp"
+                />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <!-- 아이디 비밀번호 잘못입력시 텍스트  -->
+        <TextView
+            android:id="@+id/invaildText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/passwordLayout"
+            app:layout_constraintBottom_toTopOf="@+id/loginTitlePillcare"
+            android:layout_marginLeft="23dp"
+            app:layout_constraintVertical_bias="0.4"
+            android:text="@string/errorIdOrPassword"
+            android:textStyle="bold"
+            android:textSize="10dp"
+            android:textColor="#BA0404"
+            android:shadowColor="#B0B0B0"
+            android:shadowRadius="1"
             android:shadowDx="2"
             android:shadowDy="2"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toStartOf="@id/signup_button"
-            app:layout_constraintTop_toTopOf="@id/signupLayout"/>
-
-        <!-- 회원가입 -->
+            />
+        <!-- 비밀번호 찾기  -->
         <TextView
-            android:id="@+id/signup_button"
+            android:id="@+id/findPasswordTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="10dp"
-            android:text="@string/stringSignUp"
-            android:textSize="18dp"
+            android:layout_marginTop="5dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/passwordLayout"
+            app:layout_constraintBottom_toTopOf="@+id/loginButton"
+            android:layout_marginRight="23dp"
+            android:text="@string/findPasswordTextTitleText"
             android:textStyle="bold"
             android:textColor="#000000"
             android:shadowColor="#B0B0B0"
-            android:shadowRadius="2"
+            android:shadowRadius="1"
             android:shadowDx="2"
             android:shadowDy="2"
-            app:layout_constraintStart_toEndOf="@id/signup_text"
+            />
+
+        <!-- 로그인  -->
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/loginButton"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:background="@drawable/main_color_inputbox"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@id/signupLayout"/>
+            app:layout_constraintTop_toBottomOf="@id/findPasswordTextView"
+            app:layout_constraintBottom_toTopOf="@+id/orPlusline"
+            app:layout_constraintVertical_bias="0.6"
+            android:layout_marginHorizontal="60dp"
+            android:layout_marginTop="20dp"
+            android:text="@string/stringLogin"
+            android:textColor="@color/white"
+            android:textSize="18dp"
+            android:textStyle="bold" />
+
+        <!-- Or  -->
+        <LinearLayout
+            android:id="@+id/orPlusline"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/loginButton"
+            android:layout_marginTop="30dp"
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:padding="8dp">
+
+            <View
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="1dp"
+                android:background="#CCCCCC" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/stringOr"
+                android:textSize="20dp"
+                android:textColor="#666666"
+                android:paddingHorizontal="8dp" />
+
+            <View
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="1dp"
+                android:background="#CCCCCC" />
+
+        </LinearLayout>
+
+        <!-- 카카오톡,네이버  -->
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/socialLoginLayout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@+id/orPlusline"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginTop="16dp">
+
+            <!-- 카카오 로그인 버튼 -->
+            <ImageButton
+                android:id="@+id/kakaoButton"
+                android:layout_width="64dp"
+                android:layout_height="64dp"
+                android:src="@drawable/kakaotalk_image"
+                android:scaleType="centerCrop"
+                android:background="@drawable/white_inputbox"
+                android:padding="5dp"
+                android:elevation="8dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/naverButton"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintHorizontal_chainStyle="packed"
+                android:contentDescription="@string/loginToKaKaoTalk" />
+
+            <!-- 네이버 로그인 버튼 -->
+            <ImageButton
+                android:id="@+id/naverButton"
+                android:layout_width="64dp"
+                android:layout_height="64dp"
+                android:src="@drawable/naver_image"
+                android:scaleType="centerCrop"
+                android:background="@drawable/white_inputbox"
+                android:padding="1dp"
+                android:elevation="8dp"
+                app:layout_constraintStart_toEndOf="@id/kakaoButton"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintHorizontal_chainStyle="packed"
+                android:layout_marginStart="20dp"
+                android:contentDescription="@string/loginToNaver"/>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <!-- 계정이 없으신가요? 회원가입  -->
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/signupLayout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="15dp"
+            app:layout_constraintTop_toBottomOf="@id/socialLoginLayout"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_chainStyle="packed">
+
+            <!-- 계정이 없으신가요 -->
+            <TextView
+                android:id="@+id/signup_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/dontHaveAccount"
+                android:textSize="18dp"
+                android:textColor="#666666"
+                android:shadowColor="#03B0B0B0"
+                android:shadowRadius="0.5"
+                android:shadowDx="2"
+                android:shadowDy="2"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/signup_button"
+                app:layout_constraintTop_toTopOf="@id/signupLayout"/>
+
+            <!-- 회원가입 -->
+            <TextView
+                android:id="@+id/signup_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:text="@string/stringSignUp"
+                android:textSize="18dp"
+                android:textStyle="bold"
+                android:textColor="#000000"
+                android:shadowColor="#B0B0B0"
+                android:shadowRadius="2"
+                android:shadowDx="2"
+                android:shadowDy="2"
+                app:layout_constraintStart_toEndOf="@id/signup_text"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@id/signupLayout"/>
+        </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+
+</ScrollView>

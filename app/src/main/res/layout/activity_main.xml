@@ -13,7 +13,6 @@
         android:layout_height="110dp"
         android:orientation="horizontal"
         android:paddingTop="60dp"
-        android:gravity="center_horizontal"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintBottom_toTopOf="@id/mainContainer"
@@ -23,6 +22,7 @@
             android:id="@+id/toolbarCareTargetImage"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
             android:layout_marginEnd="10dp"
             android:background="@drawable/ic_myinfo_selected"
             android:contentDescription="@string/stringToolbarCareTargetImage"/>
@@ -31,7 +31,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
-            android:text="김단국 님"
+            android:text="adsf"
             android:textSize="17sp"
             android:textColor="@color/black"/>
         <TextView
@@ -39,7 +39,7 @@
             android:layout_width="60dp"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:layout_marginStart="55dp"
+            android:layout_marginStart="85dp"
             android:layout_marginEnd="125dp"
             android:text="@string/stringHome"
             android:textColor="@color/black"

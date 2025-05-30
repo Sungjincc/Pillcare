@@ -1,6 +1,7 @@
 package com.example.pillcare_capstone.adapter
 
 import android.app.Dialog
+import android.content.Context
 import android.graphics.Color
 import android.graphics.drawable.Drawable
 import android.util.Log
@@ -17,7 +18,9 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.pillcare_capstone.R
 import com.example.pillcare_capstone.data_class.MedicinePlus
+import com.example.pillcare_capstone.data_class.MedicineScheduleUpdateRequest
 import com.example.pillcare_capstone.data_class.MedicineTimePlus
+import com.example.pillcare_capstone.data_class.ScheduleTime
 import com.example.pillcare_capstone.databinding.ActivityDialogBinding
 import com.example.pillcare_capstone.databinding.MedicinePlusListBinding
 import com.example.pillcare_capstone.network.RetrofitClient
@@ -32,7 +35,8 @@ import kotlinx.coroutines.withContext
 //mainActivity.kt에서 사용하는 리사이클러뷰 어댑터
 class MedicinePlusAdapter(
     var medicinePlusList: MutableList<MedicinePlus>,
-    private var inflater: LayoutInflater
+    private var inflater: LayoutInflater,
+    private val userId: Int
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     private inner class ViewHolder(val binding: MedicinePlusListBinding) : RecyclerView.ViewHolder(binding.root) {
@@ -106,26 +110,30 @@ class MedicinePlusAdapter(
                 setTextColor(if (day == "일" || day == "토") Color.RED else Color.WHITE)
                 setPadding(20, 20, 20, 20)
                 background = ContextCompat.getDrawable(context, R.drawable.bg_day_button_unselected)
-                layoutParams = LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f).apply {
-                    setMargins(8, 0, 8, 0)
-                }
+                layoutParams =
+                    LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f).apply {
+                        setMargins(8, 0, 8, 0)
+                    }
 
                 setOnClickListener {
                     if (item.selectedDays.contains(day)) {
                         item.selectedDays.remove(day)
-                        background = ContextCompat.getDrawable(context, R.drawable.bg_day_button_unselected)
+                        background =
+                            ContextCompat.getDrawable(context, R.drawable.bg_day_button_unselected)
                     } else {
                         item.selectedDays.add(day)
-                        background = ContextCompat.getDrawable(context, R.drawable.bg_day_button_selected)
+                        background =
+                            ContextCompat.getDrawable(context, R.drawable.bg_day_button_selected)
                     }
                 }
             }
             viewHolder.dayContainer.addView(dayButton)
         }
 
-        val timeAdapter = MedicineTimePlusAdapter(item.timeList, inflater,true)
+        val timeAdapter = MedicineTimePlusAdapter(item.timeList, inflater, true)
         viewHolder.medicineTimePlusRecyclerView.adapter = timeAdapter
-        viewHolder.medicineTimePlusRecyclerView.layoutManager = LinearLayoutManager(holder.itemView.context)
+        viewHolder.medicineTimePlusRecyclerView.layoutManager =
+            LinearLayoutManager(holder.itemView.context)
         viewHolder.medicineTimePlusRecyclerView.isNestedScrollingEnabled = false
 
         // 약 시간 추가 버튼 클릭
@@ -135,7 +143,7 @@ class MedicinePlusAdapter(
         }
 
         //약 복용 시간 버튼 클릭
-        viewHolder.setMedicineTimeEfab.setOnClickListener{
+        viewHolder.setMedicineTimeEfab.setOnClickListener {
             val context = viewHolder.itemView.context
             val dialog = Dialog(context)
 
@@ -170,36 +178,101 @@ class MedicinePlusAdapter(
         }
 
         // 약 추가 완료 버튼 클릭
-        viewHolder.medicinePlusSuccessButton.setOnClickListener{
+        viewHolder.medicinePlusSuccessButton.setOnClickListener {
+            Log.d("SharedPrefCheck", "저장된 userId: $userId") // ✅ 이 줄 추가
+            if (userId == -1) {
+                Toast.makeText(
+                    viewHolder.itemView.context,
+                    "사용자 정보가 유효하지 않습니다.",
+                    Toast.LENGTH_SHORT
+                ).show()
+                return@setOnClickListener
+            }
+
             item.medicineName = viewHolder.medicineNameEditText.text.toString()
             item.alarmTime = viewHolder.setMedicineTimeEfab.text.toString()
             viewHolder.setDisableEditMode()
             timeAdapter.setClickable(false)
 
-            val request = item.toRequest(userId = 1)
+            val request = item.toRequest(userId = userId)
             Log.d("DEBUG_JSON", Gson().toJson(request))
             CoroutineScope(Dispatchers.IO).launch {
                 try {
                     val response = RetrofitClient.apiService.sendSchedule(request)
                     withContext(Dispatchers.Main) {
                         if (response.isSuccessful) {
-                            Toast.makeText(viewHolder.itemView.context, "저장 성공", Toast.LENGTH_SHORT).show()
+                            Toast.makeText(viewHolder.itemView.context, "저장 성공", Toast.LENGTH_SHORT)
+                                .show()
                         } else {
-                            Toast.makeText(viewHolder.itemView.context, "서버 오류", Toast.LENGTH_SHORT).show()
+                            val errorBody = response.errorBody()?.string()
+                            Log.e("서버 응답 오류", "${response.code()}: $errorBody")
+                            Toast.makeText(
+                                viewHolder.itemView.context,
+                                "서버 오류: ${response.code()}",
+                                Toast.LENGTH_SHORT
+                            ).show()
                         }
                     }
                 } catch (e: Exception) {
                     withContext(Dispatchers.Main) {
-                        Toast.makeText(viewHolder.itemView.context, "전송 실패", Toast.LENGTH_SHORT).show()
+                        Log.e("전송 실패", "예외 발생: ${e.localizedMessage}")
+                        Toast.makeText(viewHolder.itemView.context, "전송 실패", Toast.LENGTH_SHORT)
+                            .show()
                     }
                 }
             }
         }
         //약 수정 버튼 클릭
-        viewHolder.medicineModifyEfab.setOnClickListener{
+        viewHolder.medicineModifyEfab.setOnClickListener {
             viewHolder.setEnableEditMode(viewHolder.originalMedicineNameEditTextBackground)
             timeAdapter.setClickable(true)
+            item.medicineName = viewHolder.medicineNameEditText.text.toString()
+            item.alarmTime = viewHolder.setMedicineTimeEfab.text.toString()
+
+            // 서버 요청용 데이터 생성
+            val schedules = item.timeList.map {
+                ScheduleTime(
+                    time = it.alarmTime,
+                    daysOfWeek = it.selectedDays
+                )
+            }
+
+            val updateRequest = MedicineScheduleUpdateRequest(
+                userId = userId,
+                medicineName = item.medicineName,
+                pillCaseColor = item.pillCaseColor?.name?.lowercase() ?: "",
+                schedules = schedules
+            )
+
+            CoroutineScope(Dispatchers.IO).launch {
+                try {
+                    val response = RetrofitClient.apiService.updateSchedule(updateRequest)
+                    withContext(Dispatchers.Main) {
+                        if (response.isSuccessful) {
+                            Toast.makeText(viewHolder.itemView.context, "수정 성공", Toast.LENGTH_SHORT)
+                                .show()
+                            viewHolder.setDisableEditMode()
+                            timeAdapter.setClickable(false)
+                        } else {
+                            val errorBody = response.errorBody()?.string()
+                            Log.e("약 수정 실패", "${response.code()}: $errorBody")
+                            Toast.makeText(
+                                viewHolder.itemView.context,
+                                "서버 오류: ${response.code()}",
+                                Toast.LENGTH_SHORT
+                            ).show()
+                        }
+                    }
+                } catch (e: Exception) {
+                    withContext(Dispatchers.Main) {
+                        Log.e("수정 예외", e.localizedMessage ?: "알 수 없는 오류")
+                        Toast.makeText(viewHolder.itemView.context, "수정 실패", Toast.LENGTH_SHORT)
+                            .show()
+                    }
+                }
+            }
         }
+
 
         //약 삭제 버튼 클릭
 
@@ -209,7 +282,35 @@ class MedicinePlusAdapter(
                 .setTitle("삭제 확인")
                 .setMessage("정말 이 약 정보를 삭제하시겠습니까?")
                 .setPositiveButton("삭제") { dialog, _ ->
-                    removeItem(holder.adapterPosition)
+
+                    // 💬 서버에 삭제 요청
+                    CoroutineScope(Dispatchers.IO).launch {
+                        try {
+                            val pillColor = item.pillCaseColor?.name?.lowercase() ?: ""
+                            val response =
+                                RetrofitClient.apiService.deleteSchedule(userId, pillColor)
+                            withContext(Dispatchers.Main) {
+                                if (response.isSuccessful) {
+                                    Toast.makeText(context, "삭제 성공", Toast.LENGTH_SHORT).show()
+                                    removeItem(holder.adapterPosition)
+                                } else {
+                                    val errorBody = response.errorBody()?.string()
+                                    Log.e("삭제 실패", "${response.code()}: $errorBody")
+                                    Toast.makeText(
+                                        context,
+                                        "서버 오류: ${response.code()}",
+                                        Toast.LENGTH_SHORT
+                                    ).show()
+                                }
+                            }
+                        } catch (e: Exception) {
+                            withContext(Dispatchers.Main) {
+                                Log.e("삭제 예외", e.localizedMessage ?: "알 수 없는 오류")
+                                Toast.makeText(context, "삭제 실패", Toast.LENGTH_SHORT).show()
+                            }
+                        }
+                    }
+
                     dialog.dismiss()
                 }
                 .setNegativeButton("취소") { dialog, _ ->
@@ -226,9 +327,7 @@ class MedicinePlusAdapter(
 
             cancelDialog.show()
         }
-
     }
-
     override fun getItemCount(): Int {
         return medicinePlusList.size
     }

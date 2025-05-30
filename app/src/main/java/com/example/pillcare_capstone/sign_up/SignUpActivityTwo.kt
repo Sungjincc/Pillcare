@@ -14,6 +14,7 @@ import com.google.gson.Gson
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class SignUpActivityTwo : AppCompatActivity() {
 
@@ -70,20 +71,26 @@ class SignUpActivityTwo : AppCompatActivity() {
             // Retrofit으로 서버 전송
             CoroutineScope(Dispatchers.IO).launch {
                 try {
+                    Log.d("SignUpCheck", "Coroutine 시작됨")
                     val gson = Gson()
                     val jsonBody = gson.toJson(user)
-                    Log.d("전송되는 JSON", jsonBody)
+                    Log.d("SignUpJSON", jsonBody)
+
                     val response = RetrofitClient.apiService.registerGuardian(user)
+
+                    Log.d("SignUpResponse", "code: ${response.code()}, success: ${response.isSuccessful}")
+
                     if (response.isSuccessful) {
-                        Log.d("Server", "회원가입 서버 전송 성공")
-                        runOnUiThread {
+                        Log.d("SignUpSuccess", "회원가입 서버 전송 성공")
+                        withContext(Dispatchers.Main) {
                             startActivity(Intent(this@SignUpActivityTwo, SignUpActivityThree::class.java))
+                            finish()
                         }
                     } else {
-                        Log.e("Server", "회원가입 실패: ${response.code()} ${response.errorBody()?.string()}")
+                        Log.e("SignUpError", "응답 실패 - code: ${response.code()}, body: ${response.errorBody()?.string()}")
                     }
                 } catch (e: Exception) {
-                    Log.e("Server", "네트워크 오류: ${e.localizedMessage}")
+                    Log.e("SignUpException", "예외 발생: ${e.message}", e)
                 }
             }
         }
