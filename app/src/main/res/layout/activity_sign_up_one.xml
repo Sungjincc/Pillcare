@@ -61,7 +61,11 @@
                     android:background="@color/white"
                     android:layout_marginTop="5dp"
                     android:hint="@string/enterName"
-                    android:textSize="13sp"/>
+                    android:textSize="13sp"
+                    android:inputType="textPersonName"
+                    android:imeOptions="actionNext"
+                    android:focusable="true"
+                    android:focusableInTouchMode="true"/>
 
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -106,9 +110,15 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:hint="@string/enterId"
-                        android:textSize="13sp"/>
+                        android:textSize="13sp"
+                        android:inputType="text"
+                        android:imeOptions="actionDone"
+                        android:singleLine="true"
+                        android:focusable="true"
+                        android:focusableInTouchMode="true"/>
                 </com.google.android.material.textfield.TextInputLayout>
                 <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/buttonCheckDuplicate"
                     android:layout_width="70dp"
                     android:layout_height="30dp"
                     android:background="@drawable/main_color_inputbox"
@@ -160,8 +170,12 @@
                         android:maxLength="11"
                         android:hint="@string/enterPhoneNumber"
                         android:paddingEnd="10dp"
+                        android:textSize="12sp"
                         android:inputType="number"
-                        android:textSize="12sp"/>
+                        android:imeOptions="actionDone"
+                        android:singleLine="true"
+                        android:focusable="true"
+                        android:focusableInTouchMode="true"/>
 
                 </com.google.android.material.textfield.TextInputLayout>
                 <androidx.appcompat.widget.AppCompatButton
@@ -215,8 +229,12 @@
                         android:layout_height="match_parent"
                         android:background="@color/white"
                         android:hint="@string/EnterSixOfNumber"
+                        android:textSize="12sp"
                         android:inputType="number"
-                        android:textSize="12sp"/>
+                        android:imeOptions="actionDone"
+                        android:singleLine="true"
+                        android:focusable="true"
+                        android:focusableInTouchMode="true"/>
 
                 </com.google.android.material.textfield.TextInputLayout>
                 <androidx.appcompat.widget.AppCompatButton
@@ -265,7 +283,8 @@
                     android:background="@color/white"
                     android:inputType="textPassword"
                     android:hint="@string/enterPassword"
-                    android:textSize="13sp"/>
+                    android:textSize="13sp"
+                    android:imeOptions="actionNext"/>
 
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -303,7 +322,8 @@
                     android:background="@color/white"
                     android:inputType="textPassword"
                     android:hint="@string/reEnterPassword"
-                    android:textSize="13sp"/>
+                    android:textSize="13sp"
+                    android:imeOptions="actionDone"/>
             </com.google.android.material.textfield.TextInputLayout>
 
             <!-- 가입 취소, 다음 버튼  -->

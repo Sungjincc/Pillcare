@@ -23,6 +23,14 @@ class MainActivity : AppCompatActivity() {
         viewBinding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(viewBinding.root)
 
+        val prefs = getSharedPreferences("user", MODE_PRIVATE)
+        val userName = prefs.getString("name", "")
+
+        // 이름이 존재하면 툴바에 표시
+        if (!userName.isNullOrEmpty()) {
+            viewBinding.toolbarCareTargetNameText.text = "$userName 님"
+        }
+
         setupFragments()
         setupBottomNavigation()
         initListeners()

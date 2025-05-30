@@ -7,11 +7,16 @@ import com.example.pillcare_capstone.R
 
 object DialogUtils {
 
-    fun showLimitReachedDialog(context: Context) {
+    fun showAlertDialog(
+        context: Context,
+        title: String = "알림",
+        message: String,
+        positiveButtonText: String = "확인"
+    ) {
         val dialog = AlertDialog.Builder(context)
-            .setTitle("약통 부족")
-            .setMessage("약은 최대 3개까지만 등록할 수 있습니다.")
-            .setPositiveButton("확인", null)
+            .setTitle(title)
+            .setMessage(message)
+            .setPositiveButton(positiveButtonText, null)
             .create()
 
         dialog.setOnShowListener {
@@ -22,5 +27,13 @@ object DialogUtils {
         }
 
         dialog.show()
+    }
+
+    fun showLimitReachedDialog(context: Context) {
+        showAlertDialog(
+            context = context,
+            title = "약통 부족",
+            message = "약은 최대 3개까지만 등록할 수 있습니다."
+        )
     }
 }

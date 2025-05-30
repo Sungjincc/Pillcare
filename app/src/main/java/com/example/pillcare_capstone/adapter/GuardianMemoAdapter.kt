@@ -15,8 +15,14 @@ import com.google.android.material.textfield.TextInputLayout
 //SignUpActivityTwo.kt에서 사용하는 리사이클러뷰 어댑터
 class GuardianMemoAdapter(
     var guardianMemoList: MutableList<GuardianMemo>,
-    private var inflater: LayoutInflater
+    private var inflater: LayoutInflater,
+    private val contextType: ContextType = ContextType.DEFAULT
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder> (){
+
+
+    enum class ContextType {
+        DEFAULT, MY_INFO
+    }
 
     private inner class ViewHolder (itemView: View) : RecyclerView.ViewHolder(itemView){
         val guardianMemoItemLayout : TextInputLayout
@@ -45,7 +51,14 @@ class GuardianMemoAdapter(
         val memo = guardianMemoList[position]
         viewHolder.guardianMemoItemEditText.setText(memo.content)
 
-        // ✅ EditText 값이 변경될 때마다 리스트에 반영
+        when (contextType) {
+            ContextType.MY_INFO -> {
+                viewHolder.guardianMemoItemLayout.setBackgroundResource(R.drawable.gray_inputbox)
+            }
+            ContextType.DEFAULT -> {
+                viewHolder.guardianMemoItemLayout.background = null
+            }
+        }
         viewHolder.guardianMemoItemEditText.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(s: Editable?) {
                 val currentPosition = holder.adapterPosition
