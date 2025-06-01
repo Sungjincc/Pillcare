@@ -5,6 +5,9 @@ class MedicinePlus (
     var alarmTime: String = "",
     var selectedDays: MutableList<String> = mutableListOf(),
     var timeList: MutableList<MedicineTimePlus> = mutableListOf(),
-    var pillCaseColor: PillCaseColor? = null
-    )
+    var pillCaseColor: PillCaseColor? = null,
+
+    var isPosted: Boolean = false //앱 내에서만 사용할 변수임
+
+)
 

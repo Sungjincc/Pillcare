@@ -34,6 +34,10 @@ class MedicineTimePlusAdapter(
 
     override fun onBindViewHolder(holder: TimeViewHolder, position: Int) {
         val item = timeList[position]
+        if (item.alarmTime.isBlank()) {
+            item.alarmTime = "12:00"
+        }
+        holder.recyclerViewSetMedicineTimeEfab.text = item.alarmTime
         holder.recyclerViewDayContainer.removeAllViews()
 
         // 요일 버튼 렌더링
