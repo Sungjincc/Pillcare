@@ -2,9 +2,7 @@ package com.example.pillcare_capstone.fragment
 
 import android.os.Bundle
 import android.util.Log
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.pillcare_capstone.adapter.MedicinePlusAdapter
@@ -15,21 +13,18 @@ import com.example.pillcare_capstone.databinding.HomeFragmentBinding
 import com.example.pillcare_capstone.network.RetrofitClient
 import com.example.pillcare_capstone.utils.DialogUtils
 import com.example.pillcare_capstone.utils.PillCaseColorSelector
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
+import kotlinx.coroutines.*
 
 class HomeFragment : Fragment() {
 
     private var _binding: HomeFragmentBinding? = null
     private val binding get() = _binding!!
+
     private val medicinePlusList = mutableListOf<MedicinePlus>()
     private lateinit var adapter: MedicinePlusAdapter
 
     override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
+        inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
         _binding = HomeFragmentBinding.inflate(inflater, container, false)
@@ -38,60 +33,64 @@ class HomeFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        initRecyclerView()
 
         val prefs = requireContext().getSharedPreferences("user", android.content.Context.MODE_PRIVATE)
         val userId = prefs.getInt("userId", -1)
 
-        fetchMedicineSchedules(userId) // ✅ 여기서 불러오기
+        if (userId == -1) {
+            Log.e("HomeFragment", "userId가 유효하지 않음")
+            return
+        }
+
+        // 서버에서 데이터 가져오고 RecyclerView 초기화
+        CoroutineScope(Dispatchers.IO).launch {
+            val data = fetchMedicineSchedules(userId)
+            withContext(Dispatchers.Main) {
+                setupRecyclerView(userId, data)
+            }
+        }
     }
 
-    private fun initRecyclerView() {
-        adapter = MedicinePlusAdapter(medicinePlusList, layoutInflater, -1) // 초기에는 userId 없음
+    private fun setupRecyclerView(userId: Int, data: List<MedicinePlus>) {
+        medicinePlusList.clear()
+        medicinePlusList.addAll(data)
+
+        adapter = MedicinePlusAdapter(medicinePlusList, layoutInflater, userId)
         binding.recyclerViewHome.layoutManager = LinearLayoutManager(requireContext())
         binding.recyclerViewHome.adapter = adapter
         binding.recyclerViewHome.setHasFixedSize(true)
         binding.recyclerViewHome.isNestedScrollingEnabled = false
     }
 
-    private fun fetchMedicineSchedules(userId: Int) {
-        CoroutineScope(Dispatchers.IO).launch {
-            try {
-                val response = RetrofitClient.apiService.getMedicineSchedules(userId)
-                if (response.isSuccessful) {
-                    val medicineList = response.body() ?: emptyList()
+    private suspend fun fetchMedicineSchedules(userId: Int): List<MedicinePlus> {
+        return try {
+            val response = RetrofitClient.apiService.getMedicineSchedules(userId)
+            if (response.isSuccessful) {
+                val body = response.body()
+                Log.d("약 조회 응답", com.google.gson.Gson().toJson(body))
 
-                    val convertedList = medicineList.map { res ->
-                        MedicinePlus(
-                            medicineName = res.medicineName,
-                            alarmTime = res.schedules.firstOrNull()?.time ?: "",
-                            selectedDays = res.schedules.firstOrNull()?.daysOfWeek?.toMutableList() ?: mutableListOf(),
-                            timeList = res.schedules.map {
-                                MedicineTimePlus(it.time, it.daysOfWeek.toMutableList())
-                            }.toMutableList(),
-                            pillCaseColor = PillCaseColor.valueOf(res.pillCaseColor.uppercase())
-                        )
-                    }.toMutableList()
+                body?.medicineList?.map { res ->
+                    val first = res.schedules.firstOrNull()
+                    val rest = res.schedules.drop(1)
 
-                    withContext(Dispatchers.Main) {
-                        medicinePlusList.clear()
-                        medicinePlusList.addAll(convertedList)
-                        adapter = MedicinePlusAdapter(medicinePlusList, layoutInflater, userId)
-                        binding.recyclerViewHome.adapter = adapter
-                    }
-
-                } else {
-                    Log.e("조회 실패", response.errorBody()?.string() ?: "Unknown error")
-                }
-            } catch (e: Exception) {
-                Log.e("조회 예외", e.localizedMessage ?: "예외 발생")
+                    MedicinePlus(
+                        medicineName = res.medicineName,
+                        alarmTime = first?.time ?: "",
+                        selectedDays = first?.daysOfWeek?.toMutableList() ?: mutableListOf(),
+                        timeList = rest.map {
+                            MedicineTimePlus(it.time, it.daysOfWeek.toMutableList())
+                        }.toMutableList(),
+                        pillCaseColor = PillCaseColor.valueOf(res.pillCaseColor.uppercase())
+                    )
+                } ?: emptyList()
+            } else {
+                Log.e("조회 실패", response.errorBody()?.string() ?: "알 수 없음")
+                emptyList()
             }
+        } catch (e: Exception) {
+            Log.e("조회 예외", e.localizedMessage ?: "예외 발생")
+            emptyList()
         }
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
     }
 
     fun addNewMedicineItem() {
@@ -109,5 +108,10 @@ class HomeFragment : Fragment() {
             adapter.notifyItemInserted(medicinePlusList.size - 1)
             binding.recyclerViewHome.scrollToPosition(medicinePlusList.size - 1)
         }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 }

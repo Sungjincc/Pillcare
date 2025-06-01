@@ -6,19 +6,24 @@ import android.os.Bundle
 import android.text.Editable
 import android.text.InputFilter
 import android.text.TextWatcher
+import android.util.Log
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import com.example.pillcare_capstone.databinding.ActivitySignUpOneBinding
 import com.example.pillcare_capstone.network.IdCheckRepository
+import com.example.pillcare_capstone.network.RetrofitClient
 import com.example.pillcare_capstone.utils.DialogUtils
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class SignUpActivityOne : AppCompatActivity() {
 
     private lateinit var binding: ActivitySignUpOneBinding
-    private var isIdAvailable = false  // ✅ 중복 확인 여부 저장 변수
+    private var isIdAvailable = false  // 중복 확인 여부 저장 변수
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -35,7 +40,7 @@ class SignUpActivityOne : AppCompatActivity() {
     private fun setupFilters() {
         val noSpaceFilter = InputFilter { source, _, _, _, _, _ ->
             if (source.contains(" ")) {
-                ""  // 공백 제거는 OK
+                ""
             } else {
                 null
             }
@@ -52,11 +57,23 @@ class SignUpActivityOne : AppCompatActivity() {
             override fun afterTextChanged(s: Editable?) {
                 val minLength = 5
                 val maxLength = 20
+                val input = s?.toString() ?: ""
+                val isValid = input.matches("^[a-zA-Z0-9]{5,20}$".toRegex())
+
+                if (input.isBlank()) {
+                    binding.signUpIdLayout.error = null
+                    binding.buttonCheckDuplicate.isEnabled = false
+                    isIdAvailable = false
+                    return
+                }
+
                 binding.signUpIdLayout.error = when {
                     s.isNullOrBlank() || s.length < minLength -> "최소 ${minLength}자 이상 입력해주세요."
                     s.length > maxLength -> "최대 ${maxLength}자 까지 입력해주세요."
                     else -> null
                 }
+
+                binding.buttonCheckDuplicate.isEnabled = isValid
                 isIdAvailable = false
             }
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
@@ -116,6 +133,32 @@ class SignUpActivityOne : AppCompatActivity() {
             }
         }
 
+        binding.buttonCheckDuplicate.setOnClickListener {
+            val inputId = binding.signUpIdEditText.text.toString()
+            CoroutineScope(Dispatchers.IO).launch {
+                try {
+                    val response = RetrofitClient.apiService.checkDuplicateId(inputId)
+                    withContext(Dispatchers.Main) {
+                        if (response.isSuccessful) {
+                            val result = response.body()
+                            if (result != null && result.exists) {
+                                DialogUtils.showAlertDialog(this@SignUpActivityOne, message = "이미 사용 중인 아이디입니다.")
+                            } else {
+                                DialogUtils.showAlertDialog(this@SignUpActivityOne, message = "사용 가능한 아이디입니다.")
+                                isIdAvailable = true
+                            }
+                        } else {
+                        }
+                    }
+                } catch (e: Exception) {
+                    withContext(Dispatchers.Main) {
+                        Log.e("CheckIdError", e.localizedMessage ?: "알 수 없는 오류")
+                    }
+                }
+            }
+
+
+        }
         binding.signUpNextButton.setOnClickListener {
             val inputSignUpName = binding.signUpNameEditText.text.toString().trim()
             val inputSignUpId = binding.signUpIdEditText.text.toString().trim()
@@ -133,10 +176,10 @@ class SignUpActivityOne : AppCompatActivity() {
                     DialogUtils.showAlertDialog(this, message = "아이디를 입력해주세요.")
                     return@setOnClickListener
                 }
-//                !isIdAvailable -> {
-//                    DialogUtils.showAlertDialog(this, message = "아이디 중복 확인을 완료해주세요.")
-//                    return@setOnClickListener
-//                }
+                !isIdAvailable -> {
+                 DialogUtils.showAlertDialog(this, message = "아이디 중복 확인을 완료해주세요.")
+                   return@setOnClickListener
+                }
                 inputSignUpPhoneNumber.isEmpty() -> {
                     DialogUtils.showAlertDialog(this, message = "전화번호를 입력해주세요.")
                     return@setOnClickListener
@@ -166,6 +209,14 @@ class SignUpActivityOne : AppCompatActivity() {
                 putExtra("password", binding.signUpPasswordEditText.text.toString())
             }
             startActivity(intent)
+        }
+        binding.buttonSendVerification.setOnClickListener {
+            val inputPhone = binding.signUpPhoneNumberEditText.text.toString().trim()
+            
+            if (inputPhone.length != 11) {
+                DialogUtils.showAlertDialog(this, message = "전화번호는 정확히 11자리를 입력해주세요.")
+                return@setOnClickListener
+            }
         }
     }
 

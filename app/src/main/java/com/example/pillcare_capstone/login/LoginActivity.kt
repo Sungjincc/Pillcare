@@ -35,12 +35,12 @@ class LoginActivity : AppCompatActivity() {
         val prefs = getSharedPreferences("user", MODE_PRIVATE)
         val token = prefs.getString("token", null)
 
-        if (!token.isNullOrEmpty()) {
-            // 2. 토큰이 존재하면 자동 로그인 (서버 없이 앱 진입)
-            startActivity(Intent(this, MainActivity::class.java))
-            finish()
-            return
-        }
+//        if (!token.isNullOrEmpty()) {
+//            // 2. 토큰이 존재하면 자동 로그인 (서버 없이 앱 진입)
+//            startActivity(Intent(this, MainActivity::class.java))
+//            finish()
+//            return
+//        }
 
         binding = ActivityLoginBinding.inflate(layoutInflater)
         setContentView(binding.root)

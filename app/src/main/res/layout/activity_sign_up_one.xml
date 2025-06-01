@@ -179,6 +179,7 @@
 
                 </com.google.android.material.textfield.TextInputLayout>
                 <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/buttonSendVerification"
                     android:layout_width="70dp"
                     android:layout_height="30dp"
                     android:background="@drawable/main_color_inputbox"
