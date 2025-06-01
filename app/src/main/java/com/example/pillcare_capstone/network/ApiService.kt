@@ -5,8 +5,8 @@ package com.example.pillcare_capstone.network
 import com.example.pillcare_capstone.data_class.CheckIdResponse
 import com.example.pillcare_capstone.data_class.LoginRequest
 import com.example.pillcare_capstone.data_class.LoginResponse
+import com.example.pillcare_capstone.data_class.MedicineScheduleListResponse
 import com.example.pillcare_capstone.data_class.MedicineScheduleRequest
-import com.example.pillcare_capstone.data_class.MedicineScheduleResponse
 import com.example.pillcare_capstone.data_class.MedicineScheduleUpdateRequest
 import com.example.pillcare_capstone.data_class.Userguardian
 import com.example.pillcare_capstone.data_class.UserguardianResponse
@@ -45,9 +45,11 @@ interface ApiService {
     @GET("api/medicine-schedule/{userId}")
     suspend fun getMedicineSchedules(
         @Path("userId") userId: Int
-    ): Response<List<MedicineScheduleResponse>>
+    ): Response<MedicineScheduleListResponse>
 
     //내 정보 조회
     @GET("/api/guardian/{userId}")
     suspend fun getUserInfo(@Path("userId") userId: Int): Response<UserguardianResponse>
+
+    //내 정보 수정
 }

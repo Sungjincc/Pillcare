@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import android.content.Context
+import android.util.Log
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.pillcare_capstone.adapter.GuardianMemoAdapter
@@ -13,6 +14,7 @@ import com.example.pillcare_capstone.data_class.GuardianMemo
 import com.example.pillcare_capstone.databinding.MyInfoFragmentBinding
 import com.example.pillcare_capstone.network.RetrofitClient
 import com.example.pillcare_capstone.utils.DialogUtils
+import com.google.gson.Gson
 import kotlinx.coroutines.launch
 
 
@@ -40,6 +42,9 @@ class MyInfoFragment : Fragment() {
             lifecycleScope.launch {
                 try {
                     val response = RetrofitClient.apiService.getUserInfo(userId)
+                    Log.d("DEBUG", "code = ${response.code()}")
+                    Log.d("DEBUG", "body = ${Gson().toJson(response.body())}")
+                    Log.d("DEBUG", "error = ${response.errorBody()?.string()}")
                     if (response.isSuccessful) {
                         val userInfo = response.body()
                         userInfo?.let {
@@ -51,8 +56,8 @@ class MyInfoFragment : Fragment() {
                             binding.myInfoCareTargetPhoneNumberPrintText.text = it.careTargetPhoneNumber
 
 
-                            val memoList = (it.guardianMemos ?: emptyList()).map { memo ->
-                                GuardianMemo(memo)
+                            val memoList = (it.guardianMemos  ?: emptyList()).map { memo ->
+                                GuardianMemo(memo.content)
                             }.toMutableList()
 
                             guardianMemoAdapter = GuardianMemoAdapter( memoList,
