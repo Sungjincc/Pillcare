@@ -24,6 +24,7 @@ import com.example.pillcare_capstone.data_class.ScheduleTime
 import com.example.pillcare_capstone.databinding.ActivityDialogBinding
 import com.example.pillcare_capstone.databinding.MedicinePlusListBinding
 import com.example.pillcare_capstone.network.RetrofitClient
+import com.example.pillcare_capstone.utils.convertKoreanDaysToEnglish
 import com.example.pillcare_capstone.utils.toRequest
 import com.google.gson.Gson
 import kotlinx.coroutines.CoroutineScope
@@ -201,52 +202,59 @@ class MedicinePlusAdapter(
 
         // 약 추가 완료 버튼 클릭
         viewHolder.medicinePlusSuccessButton.setOnClickListener {
-            Log.d("SharedPrefCheck", "저장된 userId: $userId")
-            if (userId == -1) {
-                Toast.makeText(
-                    viewHolder.itemView.context,
-                    "사용자 정보가 유효하지 않습니다.",
-                    Toast.LENGTH_SHORT
-                ).show()
-                return@setOnClickListener
-            }
-
             item.medicineName = viewHolder.medicineNameEditText.text.toString()
             item.alarmTime = viewHolder.setMedicineTimeEfab.text.toString()
             viewHolder.setDisableEditMode()
             timeAdapter.setClickable(false)
 
-            val request = item.toRequest(userId = userId)
-            Log.d("약", Gson().toJson(request))
+            val schedules = mutableListOf<ScheduleTime>()
+            val topTime = item.alarmTime
+            val topDays = item.selectedDays
+            if (topTime.isNotBlank() && topDays.isNotEmpty()) {
+                schedules.add(
+                    ScheduleTime(
+                        time = topTime,
+                        daysOfWeek = convertKoreanDaysToEnglish(topDays)
+                    )
+                )
+            }
+
+            schedules.addAll(item.timeList.map {
+                ScheduleTime(
+                    time = it.alarmTime,
+                    daysOfWeek = convertKoreanDaysToEnglish(it.selectedDays)
+                )
+            })
+
+            val updateRequest = MedicineScheduleUpdateRequest(
+                userId = userId,
+                medicineName = item.medicineName,
+                pillCaseColor = item.pillCaseColor?.name?.lowercase() ?: "",
+                schedules = schedules
+            )
+
+
             CoroutineScope(Dispatchers.IO).launch {
                 try {
-                    val response = RetrofitClient.apiService.sendSchedule(request)
+                    val response = RetrofitClient.apiService.updateSchedule(updateRequest)
                     withContext(Dispatchers.Main) {
                         if (response.isSuccessful) {
-                            Toast.makeText(viewHolder.itemView.context, "저장 성공", Toast.LENGTH_SHORT)
-                                .show()
+                            Toast.makeText(viewHolder.itemView.context, "저장 성공", Toast.LENGTH_SHORT).show()
                         } else {
                             val errorBody = response.errorBody()?.string()
-                            Log.e("서버 응답 오류", "${response.code()}: $errorBody")
-                            Toast.makeText(
-                                viewHolder.itemView.context,
-                                "서버 오류: ${response.code()}",
-                                Toast.LENGTH_SHORT
-                            ).show()
+                            Log.e("업데이트 실패", "${response.code()}: $errorBody")
                         }
                     }
                 } catch (e: Exception) {
                     withContext(Dispatchers.Main) {
-                        Log.e("전송 실패", "예외 발생: ${e.localizedMessage}")
-                        Toast.makeText(viewHolder.itemView.context, "전송 실패", Toast.LENGTH_SHORT)
-                            .show()
+                        Log.e("업데이트 예외", e.localizedMessage ?: "예외 발생")
                     }
                 }
             }
         }
+
         //약 수정 버튼 클릭
         var isEditing = false
-
         viewHolder.medicineModifyEfab.setOnClickListener {
             if (!isEditing) {
                 // [1] 수정 시작
@@ -255,56 +263,14 @@ class MedicinePlusAdapter(
                 timeAdapter.setClickable(true)
 
             } else {
+                // [2] 수정 종료 (UI 반영만, 서버 전송 없음)
                 isEditing = false
                 viewHolder.setDisableEditMode()
                 timeAdapter.setClickable(false)
 
-                // 입력값 반영
+                // 입력값은 로컬에만 반영 (서버 전송 제거됨)
                 item.medicineName = viewHolder.medicineNameEditText.text.toString()
                 item.alarmTime = viewHolder.setMedicineTimeEfab.text.toString()
-
-                val schedules = item.timeList.map {
-                    ScheduleTime(
-                        time = it.alarmTime,
-                        daysOfWeek = it.selectedDays
-                    )
-                }
-
-                val updateRequest = MedicineScheduleUpdateRequest(
-                    userId = userId,
-                    medicineName = item.medicineName,
-                    pillCaseColor = item.pillCaseColor?.name?.lowercase() ?: "",
-                    schedules = schedules
-                )
-
-                CoroutineScope(Dispatchers.IO).launch {
-                    try {
-                        val response = RetrofitClient.apiService.updateSchedule(updateRequest)
-                        withContext(Dispatchers.Main) {
-                            if (response.isSuccessful) {
-                                Toast.makeText(
-                                    viewHolder.itemView.context,
-                                    "수정 성공",
-                                    Toast.LENGTH_SHORT
-                                ).show()
-                            } else {
-                                val errorBody = response.errorBody()?.string()
-                                Log.e("약 수정 실패", "${response.code()}: $errorBody")
-                                Toast.makeText(
-                                    viewHolder.itemView.context,
-                                    "서버 오류: ${response.code()}",
-                                    Toast.LENGTH_SHORT
-                                ).show()
-                            }
-                        }
-                    } catch (e: Exception) {
-                        withContext(Dispatchers.Main) {
-                            Log.e("수정 예외", e.localizedMessage ?: "알 수 없는 오류")
-                            Toast.makeText(viewHolder.itemView.context, "수정 실패", Toast.LENGTH_SHORT)
-                                .show()
-                        }
-                    }
-                }
             }
         }
 

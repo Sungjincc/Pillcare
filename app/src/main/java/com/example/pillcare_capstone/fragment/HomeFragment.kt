@@ -13,6 +13,7 @@ import com.example.pillcare_capstone.databinding.HomeFragmentBinding
 import com.example.pillcare_capstone.network.RetrofitClient
 import com.example.pillcare_capstone.utils.DialogUtils
 import com.example.pillcare_capstone.utils.PillCaseColorSelector
+import com.example.pillcare_capstone.utils.toRequest
 import kotlinx.coroutines.*
 
 class HomeFragment : Fragment() {
@@ -100,13 +101,43 @@ class HomeFragment : Fragment() {
         }
 
         val usedColors = medicinePlusList.mapNotNull { it.pillCaseColor }.toSet()
+
         PillCaseColorSelector.showColorSelectionDialog(
             context = requireContext(),
             usedColors = usedColors
         ) { newItem ->
-            medicinePlusList.add(newItem)
-            adapter.notifyItemInserted(medicinePlusList.size - 1)
-            binding.recyclerViewHome.scrollToPosition(medicinePlusList.size - 1)
+            // 🔹 약 디폴트값 설정
+            newItem.medicineName = ""
+            newItem.alarmTime = "12:00"
+            newItem.isPosted = false
+
+            val prefs = requireContext().getSharedPreferences("user", android.content.Context.MODE_PRIVATE)
+            val userId = prefs.getInt("userId", -1)
+
+            if (userId != -1) {
+                val request = newItem.toRequest(userId)
+
+                CoroutineScope(Dispatchers.IO).launch {
+                    try {
+                        val response = RetrofitClient.apiService.sendSchedule(request)
+                        withContext(Dispatchers.Main) {
+                            if (response.isSuccessful) {
+                                newItem.isPosted = true
+                                medicinePlusList.add(newItem)
+                                adapter.notifyItemInserted(medicinePlusList.size - 1)
+                                binding.recyclerViewHome.scrollToPosition(medicinePlusList.size - 1)
+                            } else {
+                                val errorBody = response.errorBody()?.string()
+                                Log.e("약 기본 등록 실패", "${response.code()}: $errorBody")
+                            }
+                        }
+                    } catch (e: Exception) {
+                        withContext(Dispatchers.Main) {
+                            Log.e("약 생성 예외", e.localizedMessage ?: "예외 발생")
+                        }
+                    }
+                }
+            }
         }
     }
 
