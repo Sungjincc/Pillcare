@@ -49,6 +49,7 @@ class MedicinePlusAdapter(
         val medicineModifyEfab = binding.medicineModifyEfab
         val medicineDeleteEfab = binding.medicineDeleteEfab
         val medicinePlusSuccessButton = binding.medicinePlusSuccessButton
+        var isEditMode: Boolean = false
         val days = listOf("월", "화", "수", "목", "금", "토", "일")
 
         init {
@@ -71,6 +72,7 @@ class MedicinePlusAdapter(
             for (i in 0 until dayContainer.childCount) {
                 dayContainer.getChildAt(i).isEnabled = false
             }
+            isEditMode = false
         }
 
         // 수정 가능 기능
@@ -83,10 +85,13 @@ class MedicinePlusAdapter(
             medicinePlusSuccessButton.visibility = View.VISIBLE
             medicineTimePlusFab.visibility = View.VISIBLE
             setMedicineTimeEfab.isClickable = true
+            setMedicineTimeEfab.isEnabled = true
             medicineNameEditText.background = originalBackground
             for (i in 0 until dayContainer.childCount) {
                 dayContainer.getChildAt(i).isEnabled = true
             }
+            isEditMode = true
+
         }
 
     }
@@ -101,7 +106,10 @@ class MedicinePlusAdapter(
         val item = medicinePlusList[position]
         viewHolder.medicineNameEditText.setText(item.medicineName)
         viewHolder.medicineNameText.text = item.medicineName
-        viewHolder.setMedicineTimeEfab.text = item.alarmTime
+        val defaultTime = "12:00"
+        val alarmTime = item.alarmTime?.takeIf { it.isNotBlank() } ?: defaultTime
+        viewHolder.setMedicineTimeEfab.text = alarmTime
+        item.alarmTime = alarmTime
         viewHolder.dayContainer.removeAllViews()
 
         viewHolder.days.forEach { day ->
@@ -151,6 +159,7 @@ class MedicinePlusAdapter(
 
         //약 복용 시간 버튼 클릭
         viewHolder.setMedicineTimeEfab.setOnClickListener {
+            if (!viewHolder.isEditMode) return@setOnClickListener
             val context = viewHolder.itemView.context
             val dialog = Dialog(context)
 
@@ -165,6 +174,12 @@ class MedicinePlusAdapter(
             hourPicker.maxValue = 23
             minutePicker.minValue = 0
             minutePicker.maxValue = 59
+
+            hourPicker.value = 12
+            minutePicker.value = 0
+
+            hourPicker.setFormatter { i -> String.format("%02d", i) }
+            minutePicker.setFormatter { i -> String.format("%02d", i) }
 
             // 이전 버튼 클릭시 다이어로그 취소
             binding.goToPreviousPageButton.setOnClickListener {
