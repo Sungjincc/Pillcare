@@ -111,6 +111,12 @@ class MedicineTimePlusAdapter(
         minutePicker.minValue = 0
         minutePicker.maxValue = 59
 
+        hourPicker.value = 12
+        minutePicker.value = 0
+
+        hourPicker.setFormatter { i -> String.format("%02d", i) }
+        minutePicker.setFormatter { i -> String.format("%02d", i) }
+
         binding.goToPreviousPageButton.setOnClickListener {
             dialog.dismiss()
         }
