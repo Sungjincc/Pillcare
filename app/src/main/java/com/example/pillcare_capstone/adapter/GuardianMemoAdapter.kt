@@ -1,11 +1,15 @@
 package com.example.pillcare_capstone.adapter
 
+import android.graphics.Typeface
 import android.text.Editable
 import android.text.TextWatcher
+import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
+import android.widget.TextView
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.example.pillcare_capstone.R
 import com.example.pillcare_capstone.data_class.GuardianMemo
@@ -27,10 +31,11 @@ class GuardianMemoAdapter(
     private inner class ViewHolder (itemView: View) : RecyclerView.ViewHolder(itemView){
         val guardianMemoItemLayout : TextInputLayout
         val guardianMemoItemEditText : EditText
-
+        val guardianMemoText: TextView
         init {
             guardianMemoItemLayout = itemView.findViewById(R.id.guardianMemoItemLayout)
             guardianMemoItemEditText = itemView.findViewById(R.id.guardianMemoItemEditText)
+            guardianMemoText = itemView.findViewById(R.id.itemGuardianMemoText)
 
             itemView.setOnClickListener {
                 //item을 클릭햇다는걸 캐치는 되는데  몇번째 아이템인지 알 수 없다.
@@ -42,34 +47,36 @@ class GuardianMemoAdapter(
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-        val view = inflater.inflate(R.layout.guardian_memo_list, parent, false)
+        val view = when (contextType) {
+            ContextType.MY_INFO -> inflater.inflate(R.layout.guardian_memo_display, parent, false)
+            ContextType.DEFAULT -> inflater.inflate(R.layout.guardian_memo_list, parent, false)
+        }
         return ViewHolder(view)
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         val viewHolder = holder as ViewHolder
         val memo = guardianMemoList[position]
-        viewHolder.guardianMemoItemEditText.setText(memo.content)
 
         when (contextType) {
             ContextType.MY_INFO -> {
-                viewHolder.guardianMemoItemLayout.setBackgroundResource(R.drawable.gray_inputbox)
-            }
-            ContextType.DEFAULT -> {
-                viewHolder.guardianMemoItemLayout.background = null
-            }
-        }
-        viewHolder.guardianMemoItemEditText.addTextChangedListener(object : TextWatcher {
-            override fun afterTextChanged(s: Editable?) {
-                val currentPosition = holder.adapterPosition
-                if (currentPosition != RecyclerView.NO_POSITION) {
-                    guardianMemoList[currentPosition].content = s.toString()
-                }
+                viewHolder.guardianMemoText?.text = memo.content
             }
 
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
-        })
+            ContextType.DEFAULT -> {
+                viewHolder.guardianMemoItemEditText?.setText(memo.content)
+                viewHolder.guardianMemoItemEditText?.addTextChangedListener(object : TextWatcher {
+                    override fun afterTextChanged(s: Editable?) {
+                        val currentPosition = holder.adapterPosition
+                        if (currentPosition != RecyclerView.NO_POSITION) {
+                            guardianMemoList[currentPosition].content = s.toString()
+                        }
+                    }
+                    override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+                    override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
+                })
+            }
+        }
     }
 
     override fun getItemCount(): Int {
