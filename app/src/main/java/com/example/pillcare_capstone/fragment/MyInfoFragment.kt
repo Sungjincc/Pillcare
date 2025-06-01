@@ -22,6 +22,7 @@ class MyInfoFragment : Fragment() {
     private var _binding: MyInfoFragmentBinding? = null
     private val binding get() = _binding!!
     private lateinit var guardianMemoAdapter: GuardianMemoAdapter
+    private val memoList = mutableListOf<GuardianMemo>()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -35,6 +36,13 @@ class MyInfoFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        // adapter를 먼저 연결
+        guardianMemoAdapter = GuardianMemoAdapter(memoList, layoutInflater, GuardianMemoAdapter.ContextType.MY_INFO)
+        binding.myInfoGuardianMemoRecyclerView.apply {
+            layoutManager = LinearLayoutManager(requireContext())
+            adapter = guardianMemoAdapter
+        }
+
         val prefs = requireContext().getSharedPreferences("user", Context.MODE_PRIVATE)
         val userId = prefs.getInt("userId", -1)
 
@@ -45,6 +53,7 @@ class MyInfoFragment : Fragment() {
                     Log.d("DEBUG", "code = ${response.code()}")
                     Log.d("DEBUG", "body = ${Gson().toJson(response.body())}")
                     Log.d("DEBUG", "error = ${response.errorBody()?.string()}")
+
                     if (response.isSuccessful) {
                         val userInfo = response.body()
                         userInfo?.let {
@@ -55,18 +64,10 @@ class MyInfoFragment : Fragment() {
                             binding.myInfoCareTargetNamePrintText.text = it.careTargetName
                             binding.myInfoCareTargetPhoneNumberPrintText.text = it.careTargetPhoneNumber
 
-
-                            val memoList = (it.guardianMemos  ?: emptyList()).map { memo ->
-                                GuardianMemo(memo.content)
-                            }.toMutableList()
-
-                            guardianMemoAdapter = GuardianMemoAdapter( memoList,
-                                layoutInflater,
-                                GuardianMemoAdapter.ContextType.MY_INFO)
-                            binding.myInfoGuardianMemoRecyclerView.apply {
-                                layoutManager = LinearLayoutManager(requireContext())
-                                adapter = guardianMemoAdapter
-                            }
+                            // 데이터 업데이트
+                            memoList.clear()
+                            memoList.addAll(it.guardianMemos?.map { m -> GuardianMemo(m.content) } ?: emptyList())
+                            guardianMemoAdapter.notifyDataSetChanged()
                         }
                     } else {
                         DialogUtils.showAlertDialog(
