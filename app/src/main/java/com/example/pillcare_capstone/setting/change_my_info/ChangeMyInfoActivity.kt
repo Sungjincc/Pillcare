@@ -7,8 +7,9 @@ import androidx.activity.compose.setContent
 class ChangeMyInfoActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        val userId = intent.getIntExtra("userId", -1)
         setContent {
-            MyInfoNavController()
+            MyInfoNavController(userId = userId)
         }
     }
 }

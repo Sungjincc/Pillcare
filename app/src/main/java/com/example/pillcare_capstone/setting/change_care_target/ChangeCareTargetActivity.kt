@@ -7,8 +7,9 @@ import androidx.activity.compose.setContent
 class ChangeCareTargetActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        val userId = intent.getIntExtra("userId", -1)
         setContent {
-            CareTargetNavController()
+            CareTargetNavController(userId =userId)
         }
     }
 }

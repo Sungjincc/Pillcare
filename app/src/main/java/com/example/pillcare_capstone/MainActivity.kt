@@ -1,11 +1,22 @@
 package com.example.pillcare_capstone
 
+import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
+import com.example.pillcare_capstone.data_class.TokenRequest
 import com.example.pillcare_capstone.databinding.ActivityMainBinding
 import com.example.pillcare_capstone.fragment.*
+import com.example.pillcare_capstone.network.RetrofitClient
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import android.app.NotificationChannel
+import android.app.NotificationManager
+import android.content.Context
+import androidx.core.app.NotificationCompat
 
 class MainActivity : AppCompatActivity() {
 
@@ -22,6 +33,10 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         viewBinding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(viewBinding.root)
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            requestPermissions(arrayOf(android.Manifest.permission.POST_NOTIFICATIONS), 1001)
+        }
 
         val prefs = getSharedPreferences("user", MODE_PRIVATE)
         val userName = prefs.getString("name", "")
@@ -83,6 +98,9 @@ class MainActivity : AppCompatActivity() {
                 (activeFragment as HomeFragment).addNewMedicineItem()
             }
         }
+        viewBinding.toolbarAlarmImageButton.setOnClickListener {
+            triggerTestNotification()
+        }
     }
 
     // 프래그먼트 전환
@@ -126,5 +144,50 @@ class MainActivity : AppCompatActivity() {
                 viewBinding.toolbarCareTargetNameText.visibility = View.INVISIBLE
             }
         }
+    }
+
+    private fun sendTokenToServer(userId: Int, token: String) {
+        val request = TokenRequest(userId, token)
+
+        CoroutineScope(Dispatchers.IO).launch {
+            try {
+                val response = RetrofitClient.apiService.sendFcmToken(request)
+                if (response.isSuccessful) {
+                    Log.d("FCM", "✅ FCM 토큰 서버 전송 성공")
+                } else {
+                    Log.e("FCM", " 서버 응답 실패: ${response.code()}")
+                }
+            } catch (e: Exception) {
+                Log.e("FCM", " FCM 토큰 전송 중 오류 발생", e)
+            }
+        }
+    }
+
+    private fun triggerTestNotification() {
+        val title = "💊미복용 알림"
+        val body = "초록색약통 : 타이레놀을 복용하지 않았습니다."
+
+        val channelId = "pill_reminder_channel"
+        val notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            val channel = NotificationChannel(
+                channelId,
+                "약 복용 알림 채널",
+                NotificationManager.IMPORTANCE_HIGH
+            ).apply {
+                description = "약 복용 여부를 사용자에게 알려줍니다"
+            }
+            notificationManager.createNotificationChannel(channel)
+        }
+
+        val builder = NotificationCompat.Builder(this, channelId)
+            .setSmallIcon(R.drawable.bg_pill_red)  // 네가 쓰는 알림 아이콘
+            .setContentTitle(title)
+            .setContentText(body)
+            .setPriority(NotificationCompat.PRIORITY_HIGH)
+            .setAutoCancel(true)
+
+        notificationManager.notify(0, builder.build())
     }
 }

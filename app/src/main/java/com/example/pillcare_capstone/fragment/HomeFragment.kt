@@ -15,6 +15,7 @@ import com.example.pillcare_capstone.utils.DialogUtils
 import com.example.pillcare_capstone.utils.PillCaseColorSelector
 import com.example.pillcare_capstone.utils.toRequest
 import kotlinx.coroutines.*
+import com.example.pillcare_capstone.utils.convertEnglishDaysToKorean
 
 class HomeFragment : Fragment() {
 
@@ -43,24 +44,25 @@ class HomeFragment : Fragment() {
             return
         }
 
-        // 서버에서 데이터 가져오고 RecyclerView 초기화
+        adapter = MedicinePlusAdapter(medicinePlusList, layoutInflater, userId)
+        binding.recyclerViewHome.adapter = adapter
+        binding.recyclerViewHome.layoutManager = LinearLayoutManager(requireContext())
+        binding.recyclerViewHome.setHasFixedSize(true)
+        binding.recyclerViewHome.isNestedScrollingEnabled = false
+
+        // 서버에서 데이터 가져오기
         CoroutineScope(Dispatchers.IO).launch {
             val data = fetchMedicineSchedules(userId)
             withContext(Dispatchers.Main) {
-                setupRecyclerView(userId, data)
+                updateAdapterData(data)
             }
         }
     }
 
-    private fun setupRecyclerView(userId: Int, data: List<MedicinePlus>) {
+    private fun updateAdapterData(data: List<MedicinePlus>) {
         medicinePlusList.clear()
         medicinePlusList.addAll(data)
-
-        adapter = MedicinePlusAdapter(medicinePlusList, layoutInflater, userId)
-        binding.recyclerViewHome.layoutManager = LinearLayoutManager(requireContext())
-        binding.recyclerViewHome.adapter = adapter
-        binding.recyclerViewHome.setHasFixedSize(true)
-        binding.recyclerViewHome.isNestedScrollingEnabled = false
+        adapter.notifyDataSetChanged()
     }
 
     private suspend fun fetchMedicineSchedules(userId: Int): List<MedicinePlus> {
@@ -77,9 +79,12 @@ class HomeFragment : Fragment() {
                     MedicinePlus(
                         medicineName = res.medicineName,
                         alarmTime = first?.time ?: "",
-                        selectedDays = first?.daysOfWeek?.toMutableList() ?: mutableListOf(),
+                        selectedDays = convertEnglishDaysToKorean(first?.daysOfWeek ?: emptyList()).toMutableList(),
                         timeList = rest.map {
-                            MedicineTimePlus(it.time, it.daysOfWeek.toMutableList())
+                            MedicineTimePlus(
+                                it.time,
+                                convertEnglishDaysToKorean(it.daysOfWeek).toMutableList()
+                            )
                         }.toMutableList(),
                         pillCaseColor = PillCaseColor.valueOf(res.pillCaseColor.uppercase())
                     )
@@ -106,7 +111,6 @@ class HomeFragment : Fragment() {
             context = requireContext(),
             usedColors = usedColors
         ) { newItem ->
-            // 🔹 약 디폴트값 설정
             newItem.medicineName = ""
             newItem.alarmTime = "12:00"
             newItem.isPosted = false

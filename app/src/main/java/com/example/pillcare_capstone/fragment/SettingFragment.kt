@@ -2,6 +2,7 @@ package com.example.pillcare_capstone.fragment
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -30,17 +31,22 @@ class SettingFragment : Fragment() {
     }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        setupListeners()
+        val prefs = requireContext().getSharedPreferences("user", android.content.Context.MODE_PRIVATE)
+        val userId = prefs.getInt("userId", -1)
+        Log.d("userId", "$userId")
+        setupListeners(userId)
     }
 
-    private fun setupListeners()
+    private fun setupListeners(userId: Int)
     {
         binding.settingChangeMyInfo.setOnClickListener {
-           val intent = Intent(requireActivity(), ChangeMyInfoActivity::class.java)
+            val intent = Intent(requireActivity(), ChangeMyInfoActivity::class.java)
+            intent.putExtra("userId", userId)
             startActivity(intent)
         }
         binding.settingChangeCareTarget.setOnClickListener{
             val intent = Intent(requireActivity(), ChangeCareTargetActivity::class.java)
+            intent.putExtra("userId", userId)
             startActivity(intent)
         }
         binding.settingChangePassword.setOnClickListener{

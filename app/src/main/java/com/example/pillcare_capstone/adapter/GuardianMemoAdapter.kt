@@ -38,8 +38,6 @@ class GuardianMemoAdapter(
             guardianMemoText = itemView.findViewById(R.id.itemGuardianMemoText)
 
             itemView.setOnClickListener {
-                //item을 클릭햇다는걸 캐치는 되는데  몇번째 아이템인지 알 수 없다.
-                // 이럴때 RecyclerView에서 가지고 있는 adapterPosition변수를 사용한다.
                 val position: Int = adapterPosition
                 val guardianMemo = guardianMemoList.get(position)
             }

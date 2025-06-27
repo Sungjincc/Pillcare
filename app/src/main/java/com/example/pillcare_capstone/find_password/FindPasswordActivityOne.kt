@@ -24,6 +24,9 @@ class FindPasswordActivityOne : AppCompatActivity() {
     }
 
     private fun initListeners() {
+        binding.findPasswordlastPageButton.setOnClickListener {
+            finish()
+        }
         binding.findPasswordNextButton.setOnClickListener {
             val intent = Intent(this@FindPasswordActivityOne, FindPasswordActivityTwo::class.java)
             startActivity(intent)

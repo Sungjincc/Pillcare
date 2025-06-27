@@ -7,12 +7,12 @@ import androidx.navigation.compose.rememberNavController
 import com.example.pillcare_capstone.setting.components.ChangeSuccess
 
 @Composable
-fun PasswordNavController() {
+fun PasswordNavController(userId : Int) {
     val navController = rememberNavController()
 
     NavHost(navController = navController, startDestination = "change_password") {
         composable("change_password") {
-            ChangePasswordShow(navController)
+            ChangePasswordShow(navController,userId)
         }
         composable("change_password_success") {
             ChangeSuccess()

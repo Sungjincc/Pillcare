@@ -8,12 +8,12 @@ import com.example.pillcare_capstone.setting.change_my_info.ChangeMyInfoShow
 import com.example.pillcare_capstone.setting.components.ChangeSuccess
 
 @Composable
-fun CareTargetNavController() {
+fun CareTargetNavController(userId: Int) {
     val navController = rememberNavController()
 
     NavHost(navController = navController, startDestination = "change_care_target") {
         composable("change_care_target") {
-            ChangeCareTargetShow(navController)
+            ChangeCareTargetShow(navController, userId)
         }
         composable("change_care_target_success") {
             ChangeSuccess()

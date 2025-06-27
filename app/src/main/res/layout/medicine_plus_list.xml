@@ -15,7 +15,7 @@
         android:paddingTop="30dp"
         android:layout_marginTop="25dp"
         android:layout_marginStart="20dp"
-        android:src="@drawable/bg_pill"
+        android:src="@drawable/bg_pill_red"
         android:scaleType="centerCrop"
         android:padding="50dp"/>
 
@@ -63,7 +63,7 @@
         android:gravity="center"
         android:backgroundTint="@color/mainColor"
         android:text="12:00"
-        android:textSize="15dp"/>
+        android:textSize="13sp"/>
 
     <!--약 시간 추가 버튼-->
     <com.google.android.material.floatingactionbutton.FloatingActionButton
