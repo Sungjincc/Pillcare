@@ -159,6 +159,10 @@ class SignUpActivityOne : AppCompatActivity() {
 
 
         }
+
+        binding.signUpCancelButton.setOnClickListener {
+            finish()
+        }
         binding.signUpNextButton.setOnClickListener {
             val inputSignUpName = binding.signUpNameEditText.text.toString().trim()
             val inputSignUpId = binding.signUpIdEditText.text.toString().trim()

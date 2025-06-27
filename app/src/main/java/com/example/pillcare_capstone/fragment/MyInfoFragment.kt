@@ -57,7 +57,7 @@ class MyInfoFragment : Fragment() {
                     if (response.isSuccessful) {
                         val userInfo = response.body()
                         userInfo?.let {
-                            binding.myInfoCompatButton.text = "${it.name}님"
+                            binding.myInfoCompatButton.text = "${it.name} 님"
                             binding.myInfoNamePrintText.text = it.name
                             binding.myInfoIdPrintText.text = it.ID
                             binding.myInfoPhoneNumberPrintText.text = it.phoneNumber

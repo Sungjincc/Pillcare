@@ -20,6 +20,9 @@ class FindPasswordActivityTwo : AppCompatActivity() {
     }
 
     private fun setupListeners() {
+        binding.changePasswordlastButton.setOnClickListener {
+            finish()
+        }
         binding.changePasswordNextButton.setOnClickListener {
             val intent = Intent(this, FindPasswordActivityThree::class.java)
             startActivity(intent)

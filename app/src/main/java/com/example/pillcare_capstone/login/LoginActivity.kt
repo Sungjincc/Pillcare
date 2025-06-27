@@ -8,6 +8,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.example.pillcare_capstone.MainActivity
 import com.example.pillcare_capstone.data_class.LoginRequest
 import com.example.pillcare_capstone.data_class.LoginResponse
+import com.example.pillcare_capstone.data_class.TokenRequest
 import com.example.pillcare_capstone.databinding.ActivityLoginBinding
 import com.example.pillcare_capstone.find_password.FindPasswordActivityOne
 import com.example.pillcare_capstone.sign_up.SignUpActivityOne
@@ -24,6 +25,8 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import retrofit2.Response
 import com.example.pillcare_capstone.network.RetrofitClient
+import com.google.firebase.messaging.FirebaseMessaging
+import com.google.gson.Gson
 
 
 class LoginActivity : AppCompatActivity() {
@@ -85,6 +88,29 @@ class LoginActivity : AppCompatActivity() {
                                 .putInt("userId", body?.userId ?: -1)
                                 .putString("name", body?.name ?: "")
                                 .apply()
+                            FirebaseMessaging.getInstance().token.addOnCompleteListener { task ->
+                                if (task.isSuccessful) {
+                                    val fcmToken = task.result
+                                    val userId = body?.userId ?: -1
+
+                                    // 전송
+                                    CoroutineScope(Dispatchers.IO).launch {
+                                        try {
+                                            val request = TokenRequest(userId, fcmToken)
+                                            val fcmResponse = RetrofitClient.apiService.sendFcmToken(request)
+                                            val json = Gson().toJson(request)
+                                            Log.d("LoginFCM", "보내는 JSON: $json")
+                                            if (fcmResponse.isSuccessful) {
+                                                Log.d("LoginFCM", "✅ 로그인 후 FCM 토큰 전송 성공")
+                                            } else {
+                                                Log.e("LoginFCM", "❌ FCM 토큰 전송 실패: ${fcmResponse.code()}")
+                                            }
+                                        } catch (e: Exception) {
+                                            Log.e("LoginFCM", "❗ 네트워크 오류: ${e.message}")
+                                        }
+                                    }
+                                }
+                            }
 
                             // 홈 화면 이동
                             startActivity(Intent(this@LoginActivity, MainActivity::class.java))

@@ -11,6 +11,13 @@ fun convertKoreanDaysToEnglish(koreanDays: List<String>): List<String> {
     )
     return koreanDays.mapNotNull { dayMap[it] }
 }
+fun convertEnglishDaysToKorean(englishDays: List<String>): List<String> {
+    val map = mapOf(
+        "Mon" to "월", "Tue" to "화", "Wed" to "수",
+        "Thu" to "목", "Fri" to "금", "Sat" to "토", "Sun" to "일"
+    )
+    return englishDays.mapNotNull { map[it] }
+}
 
 fun MedicinePlus.toRequest(userId: Int): MedicineScheduleRequest {
     val schedules = mutableListOf<ScheduleTime>()

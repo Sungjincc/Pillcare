@@ -1,7 +1,6 @@
 package com.example.pillcare_capstone.adapter
 
 import android.app.Dialog
-import android.content.Context
 import android.graphics.Color
 import android.graphics.drawable.Drawable
 import android.util.Log
@@ -20,13 +19,12 @@ import com.example.pillcare_capstone.R
 import com.example.pillcare_capstone.data_class.MedicinePlus
 import com.example.pillcare_capstone.data_class.MedicineScheduleUpdateRequest
 import com.example.pillcare_capstone.data_class.MedicineTimePlus
+import com.example.pillcare_capstone.data_class.PillCaseColor
 import com.example.pillcare_capstone.data_class.ScheduleTime
 import com.example.pillcare_capstone.databinding.ActivityDialogBinding
 import com.example.pillcare_capstone.databinding.MedicinePlusListBinding
 import com.example.pillcare_capstone.network.RetrofitClient
 import com.example.pillcare_capstone.utils.convertKoreanDaysToEnglish
-import com.example.pillcare_capstone.utils.toRequest
-import com.google.gson.Gson
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -41,6 +39,7 @@ class MedicinePlusAdapter(
 
     private inner class ViewHolder(val binding: MedicinePlusListBinding) : RecyclerView.ViewHolder(binding.root) {
         val medicineNameEditText = binding.medicineNameEditText
+        val medicineImage = binding.medicineImage
         val originalMedicineNameEditTextBackground = binding.medicineNameEditText.background
         val medicineNameText = binding.medicineNameText
         val dayContainer = binding.dayContainer
@@ -107,6 +106,13 @@ class MedicinePlusAdapter(
         val item = medicinePlusList[position]
         viewHolder.medicineNameEditText.setText(item.medicineName)
         viewHolder.medicineNameText.text = item.medicineName
+        val pillImageRes = when (item.pillCaseColor) {
+            PillCaseColor.RED -> R.drawable.bg_pill_red
+            PillCaseColor.GREEN -> R.drawable.bg_pill_green
+            PillCaseColor.YELLOW -> R.drawable.bg_pill_yellow
+            null -> R.drawable.bg_pill_red // 기본값
+        }
+        viewHolder.binding.medicineImage.setImageResource(pillImageRes)
         val defaultTime = "12:00"
         val alarmTime = item.alarmTime?.takeIf { it.isNotBlank() } ?: defaultTime
         viewHolder.setMedicineTimeEfab.text = alarmTime
@@ -237,17 +243,25 @@ class MedicinePlusAdapter(
             CoroutineScope(Dispatchers.IO).launch {
                 try {
                     val response = RetrofitClient.apiService.updateSchedule(updateRequest)
+                    Log.d("업데이트 JSON", com.google.gson.Gson().toJson(updateRequest))
                     withContext(Dispatchers.Main) {
                         if (response.isSuccessful) {
+                            Log.d("업데이트 JSON", com.google.gson.Gson().toJson(updateRequest))
                             Toast.makeText(viewHolder.itemView.context, "저장 성공", Toast.LENGTH_SHORT).show()
                         } else {
                             val errorBody = response.errorBody()?.string()
-                            Log.e("업데이트 실패", "${response.code()}: $errorBody")
+                            if (!errorBody.isNullOrBlank()) {
+                                Log.e("업데이트 실패", "${response.code()}: ${errorBody.take(300)}") // 300자까지만 출력
+                            } else {
+                                Log.e("업데이트 실패", "${response.code()}: 응답 내용 없음")
+                            }
                         }
                     }
                 } catch (e: Exception) {
                     withContext(Dispatchers.Main) {
                         Log.e("업데이트 예외", e.localizedMessage ?: "예외 발생")
+                        Toast.makeText(viewHolder.itemView.context, "에러: ${e.message}", Toast.LENGTH_LONG).show()
+
                     }
                 }
             }
