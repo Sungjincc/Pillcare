@@ -1,18 +1,13 @@
 package com.example.pillcare_capstone.adapter
 
 import android.app.Dialog
-import android.graphics.Color
-import android.util.Log
 import android.view.*
-import android.widget.*
-import androidx.appcompat.widget.AppCompatButton
-import androidx.core.content.ContextCompat
+import android.widget.CheckBox
+import android.widget.LinearLayout
 import androidx.recyclerview.widget.RecyclerView
-import com.example.pillcare_capstone.R
 import com.example.pillcare_capstone.data_class.MedicineTimePlus
 import com.example.pillcare_capstone.databinding.ActivityDialogBinding
 import com.example.pillcare_capstone.databinding.MedicineTimePlusListBinding
-import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
 
 class MedicineTimePlusAdapter(
     private val timeList: MutableList<MedicineTimePlus>,
@@ -21,9 +16,10 @@ class MedicineTimePlusAdapter(
 ) : RecyclerView.Adapter<MedicineTimePlusAdapter.TimeViewHolder>() {
 
     inner class TimeViewHolder(binding: MedicineTimePlusListBinding) : RecyclerView.ViewHolder(binding.root) {
-        val recyclerViewSetMedicineTimeEfab: ExtendedFloatingActionButton = binding.recyclerViewSetMedicineTimeEfab
-        val recyclerViewMedicineTimeDeleteEfab: ExtendedFloatingActionButton = binding.recyclerViewMedicineTimeDeleteEfab
-        val recyclerViewDayContainer: LinearLayout = binding.recyclerViewdayContainer
+        val medicineTimeText = binding.medicineTimeText
+        val medicineDayText = binding.medicineDayText
+        val editTimeButton = binding.editTimeButton
+        val deleteTimeButton = binding.deleteTimeButton
         val days = listOf("월", "화", "수", "목", "금", "토", "일")
     }
 
@@ -34,77 +30,73 @@ class MedicineTimePlusAdapter(
 
     override fun onBindViewHolder(holder: TimeViewHolder, position: Int) {
         val item = timeList[position]
+        
+        // 기본 시간 설정
         if (item.alarmTime.isBlank()) {
-            item.alarmTime = "12:00"
+            item.alarmTime = "08:00"
         }
-        holder.recyclerViewSetMedicineTimeEfab.text = item.alarmTime
-        holder.recyclerViewDayContainer.removeAllViews()
+        
+        // 시간 포맷 변경 (24시간 → 12시간 형식)
+        val timeFormat = formatTime(item.alarmTime)
+        holder.medicineTimeText.text = timeFormat
+        
+        // 선택된 요일들 표시
+        val selectedDaysText = if (item.selectedDays.isEmpty()) {
+            "요일을 선택하세요"
+        } else {
+            item.selectedDays.joinToString(", ")
+        }
+        holder.medicineDayText.text = selectedDaysText
 
-        // 요일 버튼 렌더링
-        holder.days.forEach { day ->
-            val button = AppCompatButton(holder.itemView.context).apply {
-                text = day
-                textSize = 14f
-                gravity = Gravity.CENTER
-                setTextColor(if (day == "토" || day == "일") Color.RED else Color.WHITE)
-                background = if (item.selectedDays.contains(day)) {
-                    ContextCompat.getDrawable(context, R.drawable.bg_day_button_selected)
-                } else {
-                    ContextCompat.getDrawable(context, R.drawable.bg_day_button_unselected)
-                }
-                layoutParams = LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f).apply {
-                    setMargins(4, 0, 4, 0)
-                }
-
-                if (isClickable) {
-                    setOnClickListener {
-                        if (item.selectedDays.contains(day)) {
-                            item.selectedDays.remove(day)
-                            background = ContextCompat.getDrawable(context, R.drawable.bg_day_button_unselected)
-                        } else {
-                            item.selectedDays.add(day)
-                            background = ContextCompat.getDrawable(context, R.drawable.bg_day_button_selected)
-                        }
-                    }
+        // 클릭 허용 상태에 따른 UI 설정
+        if (isClickable) {
+            holder.editTimeButton.visibility = View.VISIBLE
+            holder.deleteTimeButton.visibility = View.VISIBLE
+            
+            // 시간 편집 버튼 클릭
+            holder.editTimeButton.setOnClickListener {
+                val currentPos = holder.adapterPosition
+                if (currentPos != RecyclerView.NO_POSITION) {
+                    showTimeAndDayPickerDialog(currentPos, holder)
                 }
             }
-            holder.recyclerViewDayContainer.addView(button)
-        }
-
-        // 클릭 허용 상태
-        if (isClickable) {
-            holder.recyclerViewMedicineTimeDeleteEfab.visibility = View.VISIBLE
-            holder.recyclerViewMedicineTimeDeleteEfab.setOnClickListener {
+            
+            // 삭제 버튼 클릭
+            holder.deleteTimeButton.setOnClickListener {
                 if (holder.adapterPosition != RecyclerView.NO_POSITION) {
                     timeList.removeAt(holder.adapterPosition)
                     notifyItemRemoved(holder.adapterPosition)
                     notifyItemRangeChanged(holder.adapterPosition, timeList.size)
                 }
             }
-
-            holder.recyclerViewSetMedicineTimeEfab.setOnClickListener {
-                val currentPos = holder.adapterPosition
-                if (currentPos != RecyclerView.NO_POSITION) {
-                    showTimePickerDialog(currentPos, holder)
-                }
-            }
         } else {
-            holder.recyclerViewMedicineTimeDeleteEfab.visibility = View.GONE
-            holder.recyclerViewSetMedicineTimeEfab.setOnClickListener(null)
-            for (i in 0 until holder.recyclerViewDayContainer.childCount) {
-                holder.recyclerViewDayContainer.getChildAt(i).isEnabled = false
-            }
-        }
-
-        // 기존 저장된 시간 있으면 버튼에 표시
-        if (item.alarmTime.isNotBlank()) {
-            holder.recyclerViewSetMedicineTimeEfab.text = item.alarmTime
+            holder.editTimeButton.visibility = View.GONE
+            holder.deleteTimeButton.visibility = View.GONE
         }
     }
 
-    private fun showTimePickerDialog(position: Int, viewHolder: TimeViewHolder) {
+    private fun formatTime(time: String): String {
+        return try {
+            val parts = time.split(":")
+            val hour = parts[0].toInt()
+            val minute = parts[1]
+            
+            when {
+                hour == 0 -> "오전 12:$minute"
+                hour < 12 -> "오전 $hour:$minute"
+                hour == 12 -> "오후 12:$minute"
+                else -> "오후 ${hour - 12}:$minute"
+            }
+        } catch (e: Exception) {
+            time // 파싱 실패 시 원본 반환
+        }
+    }
+
+    private fun showTimeAndDayPickerDialog(position: Int, viewHolder: TimeViewHolder) {
         val context = viewHolder.itemView.context
         val dialog = Dialog(context)
+        
+        // 시간 선택을 위한 기본 다이얼로그 사용
         val binding = ActivityDialogBinding.inflate(LayoutInflater.from(context))
         dialog.setContentView(binding.root)
 
@@ -115,11 +107,37 @@ class MedicineTimePlusAdapter(
         minutePicker.minValue = 0
         minutePicker.maxValue = 59
 
-        hourPicker.value = 12
-        minutePicker.value = 0
+        // 현재 시간으로 초기화
+        val currentTime = timeList[position].alarmTime.split(":")
+        hourPicker.value = currentTime.getOrNull(0)?.toIntOrNull() ?: 8
+        minutePicker.value = currentTime.getOrNull(1)?.toIntOrNull() ?: 0
 
         hourPicker.setFormatter { i -> String.format("%02d", i) }
         minutePicker.setFormatter { i -> String.format("%02d", i) }
+
+        // 요일 선택 체크박스들 (간단하게 구현)
+        val dayCheckBoxes = mutableMapOf<String, CheckBox>()
+        val dayContainer = LinearLayout(context).apply {
+            orientation = LinearLayout.HORIZONTAL
+            layoutParams = LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT
+            )
+        }
+
+        viewHolder.days.forEach { day ->
+            val checkBox = CheckBox(context).apply {
+                text = day
+                isChecked = timeList[position].selectedDays.contains(day)
+                layoutParams = LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f)
+            }
+            dayCheckBoxes[day] = checkBox
+            dayContainer.addView(checkBox)
+        }
+
+        // 다이얼로그에 요일 선택 추가 (기존 레이아웃 아래에)
+        val parentLayout = binding.root as ViewGroup
+        parentLayout.addView(dayContainer, parentLayout.childCount - 2) // 버튼들 위에 추가
 
         binding.goToPreviousPageButton.setOnClickListener {
             dialog.dismiss()
@@ -130,9 +148,18 @@ class MedicineTimePlusAdapter(
             val selectedMinute = minutePicker.value.toString().padStart(2, '0')
             val selectedTime = "$selectedHour:$selectedMinute"
 
+            // 선택된 요일들 수집
+            val selectedDays = mutableListOf<String>()
+            dayCheckBoxes.forEach { (day, checkBox) ->
+                if (checkBox.isChecked) {
+                    selectedDays.add(day)
+                }
+            }
+
             if (position != RecyclerView.NO_POSITION && position < timeList.size) {
                 timeList[position].alarmTime = selectedTime
-                viewHolder.recyclerViewSetMedicineTimeEfab.text = selectedTime
+                timeList[position].selectedDays = selectedDays
+                notifyItemChanged(position)
             }
 
             dialog.dismiss()

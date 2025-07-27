@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- 다크모드 호환 배경색 별칭 -->
+    <color name="background_color">@color/md_theme_dark_background</color>
+    
+    <!-- 기존 호환성을 위한 다크모드 별칭 -->
+    <color name="black">@color/md_theme_dark_onSurface</color>
+    <color name="white">@color/md_theme_dark_surface</color>
+    <color name="mainColor">@color/md_theme_dark_primary</color>
+    <color name="textMainColor">@color/md_theme_dark_onPrimaryContainer</color>
+    <color name="unEditAbleColor">@color/md_theme_dark_surfaceVariant</color>
+</resources> 
