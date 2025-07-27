@@ -3,118 +3,128 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fillViewport="true"
-    android:src="@drawable/logotwo">
+    android:background="?attr/colorSurface">
 
-    <!--툴바-->
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <!-- Material 3 App Bar -->
+    <com.google.android.material.appbar.MaterialToolbar
         android:id="@+id/topToolBar"
         android:layout_width="match_parent"
-        android:layout_height="110dp"
-        android:paddingTop="45dp"
+        android:layout_height="@dimen/toolbar_height"
+        android:background="?attr/colorSurface"
+        android:elevation="@dimen/elevation_level1"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/mainContainer"
-        android:background="@color/mainColor">
+        app:layout_constraintEnd_toEndOf="parent">
 
-        <!-- 프로필 이미지 -->
-        <ImageView
-            android:id="@+id/toolbarCareTargetImage"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:layout_marginStart="10dp"
-            android:background="@drawable/ic_myinfo_selected"
-            android:contentDescription="@string/stringToolbarCareTargetImage"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent" />
-
-        <!-- 사용자 이름 -->
-        <TextView
-            android:id="@+id/toolbarCareTargetNameText"
+        <!-- 프로필 섹션 -->
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginEnd="8dp"
-            android:textSize="17sp"
-            android:textColor="@color/black"
-            android:maxLines="1"
-            android:ellipsize="end"
-            android:maxWidth="100dp"
-            app:layout_constrainedWidth="true"
-            app:layout_constraintStart_toEndOf="@id/toolbarCareTargetImage"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"/>
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:layout_marginStart="@dimen/spacing_sm">
 
-        <!-- 프래그먼트 이름 -->
+            <!-- 프로필 이미지 -->
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="@dimen/spacing_xxl"
+                android:layout_height="@dimen/spacing_xxl"
+                app:cardCornerRadius="@dimen/corner_radius_full"
+                app:cardElevation="@dimen/elevation_level1"
+                android:layout_marginEnd="@dimen/spacing_sm">
+                
+                <ImageView
+                    android:id="@+id/toolbarCareTargetImage"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="?attr/colorPrimaryContainer"
+                    android:src="@drawable/ic_myinfo_selected"
+                    android:scaleType="centerInside"
+                    android:contentDescription="@string/stringToolbarCareTargetImage" />
+                    
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- 사용자 이름 -->
+            <TextView
+                android:id="@+id/toolbarCareTargetNameText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="@style/TextAppearance.App.TitleMedium"
+                android:textColor="?attr/colorOnSurface"
+                android:maxLines="1"
+                android:ellipsize="end"
+                android:maxWidth="120dp" />
+
+        </LinearLayout>
+
+        <!-- 중앙 타이틀 -->
         <TextView
             android:id="@+id/toolbarFragmentName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="center"
             android:text="@string/stringHome"
-            android:textSize="18sp"
-            android:textStyle="bold"
-            android:textColor="@color/black"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.51"/>
+            android:textAppearance="@style/TextAppearance.App.TitleLarge"
+            android:textColor="?attr/colorOnSurface" />
 
         <!-- 알림 버튼 -->
-        <ImageButton
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/toolbarAlarmImageButton"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:layout_marginEnd="10dp"
-            android:background="@drawable/warning"
-            android:scaleType="centerInside"
-            android:contentDescription="@string/stringToolbarAlarmImageButton"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent" />
+            style="@style/Widget.Material3.Button.IconButton"
+            android:layout_width="@dimen/touch_target_min"
+            android:layout_height="@dimen/touch_target_min"
+            android:layout_gravity="end"
+            android:layout_marginEnd="@dimen/spacing_sm"
+            app:icon="@drawable/warning"
+            app:iconSize="@dimen/icon_size_md"
+            app:iconTint="?attr/colorOnSurface"
+            android:contentDescription="@string/stringToolbarAlarmImageButton" />
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+    </com.google.android.material.appbar.MaterialToolbar>
 
-    <!--메인 화면-->
+    <!-- 메인 컨텐츠 영역 -->
     <FrameLayout
         android:id="@+id/mainContainer"
         android:layout_width="match_parent"
         android:layout_height="0dp"
+        android:background="@color/background_color"
+        app:layout_constraintTop_toBottomOf="@+id/topToolBar"
         app:layout_constraintBottom_toTopOf="@+id/bottomNavigationView"
-        app:layout_constraintEnd_toEndOf="@+id/bottomNavigationView"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/topToolBar"/>
+        app:layout_constraintEnd_toEndOf="parent" />
 
-    <!--약 추가 버튼-->
+    <!-- Material 3 FAB -->
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fabHome"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/ic_plus"
-        android:padding="100dp"
-        android:backgroundTint="@color/mainColor"
+        android:layout_marginEnd="@dimen/spacing_md"
+        android:layout_marginBottom="@dimen/spacing_md"
+        app:fabSize="normal"
+        app:srcCompat="@drawable/ic_plus"
+        app:tint="?attr/colorOnPrimary"
+        app:backgroundTint="?attr/colorPrimary"
+        app:elevation="@dimen/elevation_level3"
         app:layout_constraintBottom_toTopOf="@id/bottomNavigationView"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:fabCustomSize="55dp"
         android:visibility="gone"
-        android:contentDescription="@string/medicinePlusButton"/>
+        android:contentDescription="@string/medicinePlusButton" />
 
-    <!--바텀 네비게이션 뷰-->
+    <!-- Material 3 Bottom Navigation -->
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottomNavigationView"
+        style="@style/Widget.App.BottomNavigationView"
         android:layout_width="match_parent"
-        android:layout_height="110dp"
-        android:paddingTop="5dp"
-        app:itemIconSize="30dp"
-        app:itemIconTint="@color/menu_bottom_nav_color"
-        app:itemTextColor="@color/menu_bottom_nav_color"
-        app:labelVisibilityMode="labeled"
+        android:layout_height="@dimen/bottom_navigation_height"
+        android:background="?attr/colorSurface"
+        android:elevation="@dimen/elevation_level2"
+        app:itemIconSize="@dimen/icon_size_md"
+        app:itemIconTint="?attr/colorOnSurfaceVariant"
+        app:itemTextColor="?attr/colorOnSurfaceVariant"
+        app:itemActiveIndicatorStyle="@style/Widget.Material3.BottomNavigationView.ActiveIndicator"
+        app:labelVisibilityMode="unlabeled"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:menu="@menu/menu_bottom_nav" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
