@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Material 3 Spacing Scale (8dp grid system) -->
+    
+    <!-- Extra Small -->
+    <dimen name="spacing_xs">4dp</dimen>
+    
+    <!-- Small -->
+    <dimen name="spacing_sm">8dp</dimen>
+    
+    <!-- Medium -->
+    <dimen name="spacing_md">16dp</dimen>
+    
+    <!-- Large -->
+    <dimen name="spacing_lg">24dp</dimen>
+    
+    <!-- Extra Large -->
+    <dimen name="spacing_xl">32dp</dimen>
+    
+    <!-- Extra Extra Large -->
+    <dimen name="spacing_xxl">40dp</dimen>
+    
+    <!-- Huge -->
+    <dimen name="spacing_huge">48dp</dimen>
+    
+    <!-- Component specific dimensions -->
+    
+    <!-- Text sizes -->
+    <dimen name="text_display_large">57sp</dimen>
+    <dimen name="text_display_medium">45sp</dimen>
+    <dimen name="text_display_small">36sp</dimen>
+    <dimen name="text_headline_large">32sp</dimen>
+    <dimen name="text_headline_medium">28sp</dimen>
+    <dimen name="text_headline_small">24sp</dimen>
+    <dimen name="text_title_large">22sp</dimen>
+    <dimen name="text_title_medium">16sp</dimen>
+    <dimen name="text_title_small">14sp</dimen>
+    <dimen name="text_body_large">16sp</dimen>
+    <dimen name="text_body_medium">14sp</dimen>
+    <dimen name="text_body_small">12sp</dimen>
+    <dimen name="text_label_large">14sp</dimen>
+    <dimen name="text_label_medium">12sp</dimen>
+    <dimen name="text_label_small">11sp</dimen>
+    
+    <!-- Component heights -->
+    <dimen name="toolbar_height">64dp</dimen>
+    <dimen name="bottom_navigation_height">80dp</dimen>
+    <dimen name="fab_size">56dp</dimen>
+    <dimen name="fab_mini_size">40dp</dimen>
+    <dimen name="button_height">48dp</dimen>
+    <dimen name="input_field_height">56dp</dimen>
+    <dimen name="list_item_height">56dp</dimen>
+    <dimen name="list_item_height_two_line">72dp</dimen>
+    <dimen name="list_item_height_three_line">88dp</dimen>
+    
+    <!-- Corner radius -->
+    <dimen name="corner_radius_xs">4dp</dimen>
+    <dimen name="corner_radius_sm">8dp</dimen>
+    <dimen name="corner_radius_md">12dp</dimen>
+    <dimen name="corner_radius_lg">16dp</dimen>
+    <dimen name="corner_radius_xl">20dp</dimen>
+    <dimen name="corner_radius_xxl">24dp</dimen>
+    <dimen name="corner_radius_full">999dp</dimen>
+    
+    <!-- Elevation -->
+    <dimen name="elevation_level0">0dp</dimen>
+    <dimen name="elevation_level1">1dp</dimen>
+    <dimen name="elevation_level2">3dp</dimen>
+    <dimen name="elevation_level3">6dp</dimen>
+    <dimen name="elevation_level4">8dp</dimen>
+    <dimen name="elevation_level5">12dp</dimen>
+    
+    <!-- Icon sizes -->
+    <dimen name="icon_size_xs">16dp</dimen>
+    <dimen name="icon_size_sm">20dp</dimen>
+    <dimen name="icon_size_md">24dp</dimen>
+    <dimen name="icon_size_lg">32dp</dimen>
+    <dimen name="icon_size_xl">40dp</dimen>
+    <dimen name="icon_size_xxl">48dp</dimen>
+    
+    <!-- Medicine specific dimensions -->
+    <dimen name="pill_case_size">48dp</dimen>
+    <dimen name="pill_case_size_large">64dp</dimen>
+    <dimen name="medicine_card_min_height">80dp</dimen>
+    <dimen name="medicine_time_chip_height">32dp</dimen>
+    
+    <!-- Touch target sizes -->
+    <dimen name="touch_target_min">48dp</dimen>
+    <dimen name="touch_target_recommended">56dp</dimen>
+    
+    <!-- Layout margins -->
+    <dimen name="screen_horizontal_margin">@dimen/spacing_md</dimen>
+    <dimen name="screen_vertical_margin">@dimen/spacing_md</dimen>
+    <dimen name="card_margin">@dimen/spacing_sm</dimen>
+    <dimen name="card_padding">@dimen/spacing_md</dimen>
+    <dimen name="list_item_padding">@dimen/spacing_md</dimen>
+    
+</resources> 
