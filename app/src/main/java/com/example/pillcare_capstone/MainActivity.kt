@@ -72,17 +72,14 @@ class MainActivity : AppCompatActivity() {
             when (item.itemId) {
                 R.id.fragment_myinfo -> {
                     showFragment(myInfoFragment)
-                    viewBinding.toolbarFragmentName.text = "내 정보"
                     true
                 }
                 R.id.fragment_home -> {
                     showFragment(homeFragment)
-                    viewBinding.toolbarFragmentName.text = "홈"
                     true
                 }
                 R.id.fragment_setting -> {
                     showFragment(settingFragment)
-                    viewBinding.toolbarFragmentName.text = "설정"
                     true
                 }
                 else -> false

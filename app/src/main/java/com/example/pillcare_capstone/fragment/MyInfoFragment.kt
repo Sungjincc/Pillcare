@@ -11,6 +11,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.pillcare_capstone.adapter.GuardianMemoAdapter
 import com.example.pillcare_capstone.data_class.GuardianMemo
+import com.example.pillcare_capstone.data_class.UserguardianResponse
 import com.example.pillcare_capstone.databinding.MyInfoFragmentBinding
 import com.example.pillcare_capstone.network.RetrofitClient
 import com.example.pillcare_capstone.utils.DialogUtils

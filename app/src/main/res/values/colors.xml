@@ -1,12 +1,100 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="black">#FF000000</color>
-    <color name="white">#FFFFFFFF</color>
-    <color name="blue">#2C3980</color>
-    <color name="red">#C12525</color>
-    <color name="green">#4CAF50</color>
+    <!-- Material 3 Light Theme Colors -->
+    <!-- Primary colors - 메인 브랜드 색상-->
+    <color name="md_theme_light_primary">#81C181</color>
+    <color name="md_theme_light_onPrimary">#FFFFFF</color>
+    <color name="md_theme_light_primaryContainer">#9CF1F0</color>
+    <color name="md_theme_light_onPrimaryContainer">#00201F</color>
+    
+    <!-- Secondary colors - 보조 색상 -->
+    <color name="md_theme_light_secondary">#4A6363</color>
+    <color name="md_theme_light_onSecondary">#FFFFFF</color>
+    <color name="md_theme_light_secondaryContainer">#CCE8E7</color>
+    <color name="md_theme_light_onSecondaryContainer">#051F20</color>
+    
+    <!-- Tertiary colors - 액센트 색상 -->
+    <color name="md_theme_light_tertiary">#4D6174</color>
+    <color name="md_theme_light_onTertiary">#FFFFFF</color>
+    <color name="md_theme_light_tertiaryContainer">#D4E4FB</color>
+    <color name="md_theme_light_onTertiaryContainer">#081E2D</color>
+    
+    <!-- Error colors -->
+    <color name="md_theme_light_error">#BA1A1A</color>
+    <color name="md_theme_light_errorContainer">#FFDAD6</color>
+    <color name="md_theme_light_onError">#FFFFFF</color>
+    <color name="md_theme_light_onErrorContainer">#410002</color>
+    
+    <!-- Background colors -->
+    <color name="md_theme_light_background">#FAFDFB</color>
+    <color name="md_theme_light_onBackground">#191C1C</color>
+    <color name="md_theme_light_surface">#FAFDFB</color>
+    <color name="md_theme_light_onSurface">#191C1C</color>
+    
+    <!-- Surface variant colors -->
+    <color name="md_theme_light_surfaceVariant">#DAE5E3</color>
+    <color name="md_theme_light_onSurfaceVariant">#3F4947</color>
+    <color name="md_theme_light_outline">#70796F</color>
+    <color name="md_theme_light_inverseOnSurface">#EFF1EF</color>
+    <color name="md_theme_light_inverseSurface">#2E3130</color>
+    <color name="md_theme_light_inversePrimary">#80D5D3</color>
+    
+    <!-- Material 3 Dark Theme Colors -->
+    <color name="md_theme_dark_primary">#80D5D3</color>
+    <color name="md_theme_dark_onPrimary">#003736</color>
+    <color name="md_theme_dark_primaryContainer">#005050</color>
+    <color name="md_theme_dark_onPrimaryContainer">#9CF1F0</color>
+    
+    <color name="md_theme_dark_secondary">#B0CCCB</color>
+    <color name="md_theme_dark_onSecondary">#1C3535</color>
+    <color name="md_theme_dark_secondaryContainer">#324B4B</color>
+    <color name="md_theme_dark_onSecondaryContainer">#CCE8E7</color>
+    
+    <color name="md_theme_dark_tertiary">#B5C8DF</color>
+    <color name="md_theme_dark_onTertiary">#1F3443</color>
+    <color name="md_theme_dark_tertiaryContainer">#354A5B</color>
+    <color name="md_theme_dark_onTertiaryContainer">#D4E4FB</color>
+    
+    <color name="md_theme_dark_error">#FFB4AB</color>
+    <color name="md_theme_dark_errorContainer">#93000A</color>
+    <color name="md_theme_dark_onError">#690005</color>
+    <color name="md_theme_dark_onErrorContainer">#FFDAD6</color>
+    
+    <color name="md_theme_dark_background">#0F1515</color>
+    <color name="md_theme_dark_onBackground">#DFE3E1</color>
+    <color name="md_theme_dark_surface">#0F1515</color>
+    <color name="md_theme_dark_onSurface">#DFE3E1</color>
+    
+    <color name="md_theme_dark_surfaceVariant">#3F4947</color>
+    <color name="md_theme_dark_onSurfaceVariant">#BFC9C6</color>
+    <color name="md_theme_dark_outline">#899389</color>
+    <color name="md_theme_dark_inverseOnSurface">#191C1C</color>
+    <color name="md_theme_dark_inverseSurface">#DFE3E1</color>
+    <color name="md_theme_dark_inversePrimary">#006A6B</color>
+    
+    <!-- 약물 관리용 커스텀 색상 (약통 색상) -->
+    <color name="pill_red">#E53E3E</color>
+    <color name="pill_yellow">#FBD38D</color>
+    <color name="pill_green">#68D391</color>
+    
+    <!-- 기존 호환성을 위한 별칭 및 누락된 색상들 -->
+    <color name="black">@color/md_theme_light_onSurface</color>
+    <color name="white">@color/md_theme_light_surface</color>
+    <color name="mainColor">@color/md_theme_light_primary</color>
+    <color name="textMainColor">@color/md_theme_light_onPrimaryContainer</color>
+    <color name="unEditAbleColor">@color/md_theme_light_surfaceVariant</color>
+    
+    <!-- 누락된 기존 색상들 추가 -->
     <color name="gray">#666464</color>
-    <color name="mainColor">#81C181</color>
-    <color name="textMainColor">#73CA73</color>
-    <color name="unEditAbleColor">#C0E0DEDE</color>
+    <color name="blue">#2C3980</color>
+    <color name="green">#4CAF50</color>
+    <color name="red">#C12525</color>
+    
+    <!-- 다크모드 호환 배경색 별칭 -->
+    <color name="background_color">@color/md_theme_light_background</color>
+    
+    <!-- 상태별 색상 -->
+    <color name="success">#10B981</color>
+    <color name="warning">#F59E0B</color>
+    <color name="info">#3B82F6</color>
 </resources>

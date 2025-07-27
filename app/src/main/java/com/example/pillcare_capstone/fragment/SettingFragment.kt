@@ -66,11 +66,36 @@ class SettingFragment : Fragment() {
             startActivity(intent)
         }
         binding.settingLogoutEfab.setOnClickListener{
-            val intent = Intent(requireActivity(),LoginActivity::class.java)
-            startActivity(intent)
+            showLogoutConfirmDialog()
         }
     }
 
+    private fun showLogoutConfirmDialog() {
+        val builder = androidx.appcompat.app.AlertDialog.Builder(requireContext())
+        builder.apply {
+            setTitle("로그아웃")
+            setMessage("정말로 로그아웃 하시겠습니까?")
+            setPositiveButton("로그아웃") { _, _ ->
+                performLogout()
+            }
+            setNegativeButton("취소") { dialog, _ ->
+                dialog.dismiss()
+            }
+        }
+        builder.create().show()
+    }
+
+    private fun performLogout() {
+        // SharedPreferences에서 사용자 정보 제거
+        val prefs = requireContext().getSharedPreferences("user", android.content.Context.MODE_PRIVATE)
+        prefs.edit().clear().apply()
+        
+        // 로그인 화면으로 이동하고 백스택 제거
+        val intent = Intent(requireActivity(), LoginActivity::class.java)
+        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+        startActivity(intent)
+        requireActivity().finish()
+    }
 
     override fun onDestroyView() {
         super.onDestroyView()
