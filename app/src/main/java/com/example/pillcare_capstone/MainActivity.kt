@@ -120,11 +120,9 @@ class MainActivity : AppCompatActivity() {
         when (fragment) {
             is HomeFragment -> {
                 viewBinding.fabHome.visibility = View.VISIBLE
-                viewBinding.bottomNavigationView.setBackgroundResource(R.drawable.bg_bottom_nav_home)
             }
             else -> {
                 viewBinding.fabHome.visibility = View.GONE
-                viewBinding.bottomNavigationView.setBackgroundResource(R.drawable.bg_bottom_nav_default)
             }
         }
     }

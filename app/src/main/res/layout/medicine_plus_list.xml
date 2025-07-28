@@ -34,7 +34,7 @@
             android:layout_marginStart="@dimen/spacing_md"
             app:cardCornerRadius="@dimen/corner_radius_md"
             app:cardElevation="@dimen/elevation_level1"
-            app:cardBackgroundColor="?attr/colorPrimaryContainer"
+
             app:layout_constraintStart_toEndOf="@id/medicineColorIndicator"
             app:layout_constraintTop_toTopOf="parent">
 
