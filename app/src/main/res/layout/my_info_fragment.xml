@@ -306,19 +306,6 @@
                     android:text="보호자 메모"
                     android:textAppearance="@style/TextAppearance.App.TitleLarge"
                     android:textColor="?attr/colorOnBackground" />
-
-                <!-- 메모 추가 버튼 -->
-                <com.google.android.material.button.MaterialButton
-                    style="@style/Widget.Material3.Button.TonalButton"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="메모 추가"
-                    android:textSize="14sp"
-                    app:icon="@drawable/ic_plus"
-                    app:iconSize="18dp"
-                    app:cornerRadius="@dimen/corner_radius_sm"
-                    android:contentDescription="메모 추가" />
-
             </LinearLayout>
 
             <!-- 메모 리스트 -->
