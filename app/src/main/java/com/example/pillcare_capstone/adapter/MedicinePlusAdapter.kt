@@ -59,7 +59,9 @@ class MedicinePlusAdapter(
             deleteMedicineButton.visibility = View.VISIBLE
             saveMedicineButton.visibility = View.GONE
             
+            setMedicineTimeEfab.visibility = View.GONE
             setMedicineTimeEfab.isClickable = false
+            medicineTimeRecyclerView.visibility = View.GONE
             isEditMode = false
         }
 
@@ -72,8 +74,10 @@ class MedicinePlusAdapter(
             deleteMedicineButton.visibility = View.GONE
             saveMedicineButton.visibility = View.VISIBLE
             
+            setMedicineTimeEfab.visibility = View.VISIBLE
             setMedicineTimeEfab.isClickable = true
             setMedicineTimeEfab.isEnabled = true
+            medicineTimeRecyclerView.visibility = View.VISIBLE
             isEditMode = true
         }
     }
@@ -112,7 +116,7 @@ class MedicinePlusAdapter(
         
         val defaultTime = "12:00"
         val alarmTime = item.alarmTime?.takeIf { it.isNotBlank() } ?: defaultTime
-        viewHolder.setMedicineTimeEfab.text = "시간 설정"
+        viewHolder.setMedicineTimeEfab.text = "시간 추가"
         item.alarmTime = alarmTime
 
         // 약물 시간 리스트 설정
@@ -124,6 +128,7 @@ class MedicinePlusAdapter(
 
         // 초기 상태 설정
         viewHolder.setDisableEditMode()
+        viewHolder.medicineTimeRecyclerView.visibility = View.GONE
 
         //약 복용 시간 버튼 클릭
         viewHolder.setMedicineTimeEfab.setOnClickListener {

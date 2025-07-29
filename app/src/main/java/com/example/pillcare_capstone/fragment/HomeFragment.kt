@@ -77,7 +77,7 @@ class HomeFragment : Fragment() {
                     val rest = res.schedules.drop(1)
 
                     MedicinePlus(
-                        medicineName = res.medicineName,
+                        medicineName = res.medicineName ?: "",
                         alarmTime = first?.time ?: "",
                         selectedDays = convertEnglishDaysToKorean(first?.daysOfWeek ?: emptyList()).toMutableList(),
                         timeList = rest.map {
