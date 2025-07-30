@@ -133,11 +133,13 @@ class MainActivity : AppCompatActivity() {
             is HomeFragment -> {
                 viewBinding.toolbarFragmentName.text = "홈"
                 viewBinding.toolbarCareTargetImage.visibility = View.VISIBLE
+                viewBinding.toolbarCareTargetImageCard.visibility = View.VISIBLE
                 viewBinding.toolbarCareTargetNameText.visibility = View.VISIBLE
             }
             is MyInfoFragment -> {
                 viewBinding.toolbarFragmentName.text = "내 정보"
                 viewBinding.toolbarFragmentName.visibility = View.VISIBLE
+                viewBinding.toolbarCareTargetImageCard.visibility = View.INVISIBLE
                 viewBinding.toolbarCareTargetImage.visibility = View.INVISIBLE
                 viewBinding.toolbarCareTargetNameText.visibility = View.INVISIBLE
             }
@@ -145,6 +147,7 @@ class MainActivity : AppCompatActivity() {
                 viewBinding.toolbarFragmentName.text = "설정"
                 viewBinding.toolbarFragmentName.visibility = View.VISIBLE
                 viewBinding.toolbarCareTargetImage.visibility = View.INVISIBLE
+                viewBinding.toolbarCareTargetImageCard.visibility = View.INVISIBLE
                 viewBinding.toolbarCareTargetNameText.visibility = View.INVISIBLE
             }
             else -> {

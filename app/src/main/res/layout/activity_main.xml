@@ -27,6 +27,7 @@
 
             <!-- 프로필 이미지 -->
             <com.google.android.material.card.MaterialCardView
+                android:id="@+id/toolbarCareTargetImageCard"
                 android:layout_width="@dimen/spacing_xxl"
                 android:layout_height="@dimen/spacing_xxl"
                 app:cardCornerRadius="@dimen/corner_radius_full"
