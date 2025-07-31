@@ -41,6 +41,9 @@ fun ChangeMyInfoShow(navController: NavController, userId: Int) {
     var phoneNumber by remember { mutableStateOf("") }
     var verificationCode by remember{ mutableStateOf("") }
     var password by remember { mutableStateOf("") }
+    var careTargetName by remember { mutableStateOf("") }
+    var careTargetPhoneNumber by remember { mutableStateOf("") }
+
 
     val context = LocalContext.current
     val activity = context as? Activity
@@ -53,7 +56,10 @@ fun ChangeMyInfoShow(navController: NavController, userId: Int) {
             user?.let {
                 name = it.name
                 id = it.ID
-                phoneNumber = it.phoneNumber.replace("-", "")            }
+                phoneNumber = it.phoneNumber.replace("-", "")
+                careTargetName = it.careTargetName
+                careTargetPhoneNumber = it.careTargetPhoneNumber
+            }
         }
         if (pwResponse.isSuccessful) {
             password = pwResponse.body()?.password ?: ""
@@ -173,9 +179,10 @@ fun ChangeMyInfoShow(navController: NavController, userId: Int) {
                     val result = RetrofitClient.apiService.updateUserInfo(
                         userId = userId,
                         request = UpdateGuardianRequest(
-                            userId = userId,
                             name = name,
-                            phoneNumber = phoneNumber
+                            phoneNumber = phoneNumber,
+                            careTargetName = careTargetName,
+                            careTargetPhoneNumber = careTargetPhoneNumber
                         )
                     )
                     Handler(Looper.getMainLooper()).post {

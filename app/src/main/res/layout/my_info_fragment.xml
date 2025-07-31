@@ -133,6 +133,11 @@
                         android:textAppearance="@style/TextAppearance.App.BodyLarge"
                         android:textColor="?attr/colorOnSurface"
                         tools:text="김단국" />
+                    <EditText
+                        android:id="@+id/myInfoNameEditText"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:visibility="gone"/>
 
                 </LinearLayout>
 
@@ -205,6 +210,11 @@
                         android:textAppearance="@style/TextAppearance.App.BodyLarge"
                         android:textColor="?attr/colorOnSurface"
                         tools:text="010-1234-5678" />
+                    <EditText
+                        android:id="@+id/myInfoPhoneNumberEditText"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:visibility="gone"/>
 
                 </LinearLayout>
 
@@ -241,6 +251,11 @@
                         android:textAppearance="@style/TextAppearance.App.BodyLarge"
                         android:textColor="?attr/colorOnSurface"
                         tools:text="김할머니" />
+                    <EditText
+                        android:id="@+id/myInfoCareTargetNameEditText"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:visibility="gone"/>
 
                 </LinearLayout>
 
@@ -277,10 +292,35 @@
                         android:textAppearance="@style/TextAppearance.App.BodyLarge"
                         android:textColor="?attr/colorOnSurface"
                         tools:text="010-9876-5432" />
+                    <EditText
+                        android:id="@+id/myInfoCareTargetPhoneNumberEditText"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:visibility="gone"/>
 
                 </LinearLayout>
 
             </com.google.android.material.card.MaterialCardView>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="end">
+
+                <Button
+                    android:id="@+id/editButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="수정"/>
+
+                <Button
+                    android:id="@+id/saveButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="완료"
+                    android:visibility="gone"/>
+            </LinearLayout>
 
         </LinearLayout>
 
@@ -351,6 +391,3 @@
     </LinearLayout>
 
 </androidx.core.widget.NestedScrollView>
-
-
-

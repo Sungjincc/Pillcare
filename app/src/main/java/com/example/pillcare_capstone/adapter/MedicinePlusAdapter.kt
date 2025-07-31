@@ -1,5 +1,6 @@
 package com.example.pillcare_capstone.adapter
 
+import android.graphics.Color
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -40,6 +41,7 @@ class MedicinePlusAdapter(
         val editMedicineButton = binding.editMedicineButton
         val deleteMedicineButton = binding.deleteMedicineButton
         val saveMedicineButton = binding.saveMedicineButton
+        val cardView = binding.cardView
         var isEditMode: Boolean = false
         val days = listOf("월", "화", "수", "목", "금", "토", "일")
 
@@ -63,6 +65,7 @@ class MedicinePlusAdapter(
             setMedicineTimeEfab.isClickable = false
             medicineTimeRecyclerView.visibility = View.GONE
             isEditMode = false
+            cardView.setCardBackgroundColor(Color.WHITE)
         }
 
         // 수정 가능 기능
@@ -79,6 +82,7 @@ class MedicinePlusAdapter(
             setMedicineTimeEfab.isEnabled = true
             medicineTimeRecyclerView.visibility = View.VISIBLE
             isEditMode = true
+            cardView.setCardBackgroundColor(ContextCompat.getColor(itemView.context, R.color.md_theme_light_surface))
         }
     }
 
@@ -127,8 +131,14 @@ class MedicinePlusAdapter(
         viewHolder.medicineTimeRecyclerView.isNestedScrollingEnabled = false
 
         // 초기 상태 설정
-        viewHolder.setDisableEditMode()
-        viewHolder.medicineTimeRecyclerView.visibility = View.GONE
+        if (item.isNew) {
+            viewHolder.setEnableEditMode()
+            item.isNew = false
+        } else {
+            viewHolder.setDisableEditMode()
+        }
+        viewHolder.medicineTimeRecyclerView.visibility = if (viewHolder.isEditMode) View.VISIBLE else View.GONE
+
 
         //약 복용 시간 버튼 클릭
         viewHolder.setMedicineTimeEfab.setOnClickListener {
