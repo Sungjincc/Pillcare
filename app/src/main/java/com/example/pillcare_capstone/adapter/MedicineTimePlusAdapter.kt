@@ -1,11 +1,14 @@
 package com.example.pillcare_capstone.adapter
 
 import android.app.Dialog
+import android.graphics.Color
 import android.view.*
 import android.widget.CheckBox
 import android.widget.LinearLayout
 import android.widget.TextView
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
+import com.example.pillcare_capstone.R
 import com.example.pillcare_capstone.data_class.MedicineTimePlus
 import com.example.pillcare_capstone.databinding.ActivityDialogBinding
 import com.example.pillcare_capstone.databinding.MedicineTimePlusListBinding
@@ -16,11 +19,14 @@ class MedicineTimePlusAdapter(
     private var isClickable: Boolean = true
 ) : RecyclerView.Adapter<MedicineTimePlusAdapter.TimeViewHolder>() {
 
+    private var editingPosition = -1
+
     inner class TimeViewHolder(binding: MedicineTimePlusListBinding) : RecyclerView.ViewHolder(binding.root) {
         val medicineTimeText = binding.medicineTimeText
         val medicineDayText = binding.medicineDayText
         val editTimeButton = binding.editTimeButton
         val deleteTimeButton = binding.deleteTimeButton
+        val cardView = binding.cardView // Add this line
         val days = listOf("월", "화", "수", "목", "금", "토", "일")
     }
 
@@ -31,16 +37,22 @@ class MedicineTimePlusAdapter(
 
     override fun onBindViewHolder(holder: TimeViewHolder, position: Int) {
         val item = timeList[position]
-        
+
+        if (position == editingPosition) {
+            holder.cardView.setCardBackgroundColor(ContextCompat.getColor(holder.itemView.context, R.color.md_theme_light_surfaceVariant))
+        } else {
+            holder.cardView.setCardBackgroundColor(Color.WHITE)
+        }
+
         // 기본 시간 설정
         if (item.alarmTime.isBlank()) {
             item.alarmTime = "08:00"
         }
-        
+
         // 시간 포맷 변경 (24시간 → 12시간 형식)
         val timeFormat = formatTime(item.alarmTime)
         holder.medicineTimeText.text = timeFormat
-        
+
         // 선택된 요일들 표시
         val selectedDaysText = if (item.selectedDays.isEmpty()) {
             "요일을 선택하세요"
@@ -53,15 +65,17 @@ class MedicineTimePlusAdapter(
         if (isClickable) {
             holder.editTimeButton.visibility = View.VISIBLE
             holder.deleteTimeButton.visibility = View.VISIBLE
-            
+
             // 시간 편집 버튼 클릭
             holder.editTimeButton.setOnClickListener {
                 val currentPos = holder.adapterPosition
                 if (currentPos != RecyclerView.NO_POSITION) {
+                    editingPosition = currentPos
+                    notifyItemChanged(currentPos)
                     showTimeAndDayPickerDialog(currentPos, holder)
                 }
             }
-            
+
             // 삭제 버튼 클릭
             holder.deleteTimeButton.setOnClickListener {
                 if (holder.adapterPosition != RecyclerView.NO_POSITION) {
@@ -81,7 +95,7 @@ class MedicineTimePlusAdapter(
             val parts = time.split(":")
             val hour = parts[0].toInt()
             val minute = parts[1]
-            
+
             when {
                 hour == 0 -> "오전 12:$minute"
                 hour < 12 -> "오전 $hour:$minute"
@@ -96,7 +110,7 @@ class MedicineTimePlusAdapter(
     private fun showTimeAndDayPickerDialog(position: Int, viewHolder: TimeViewHolder) {
         val context = viewHolder.itemView.context
         val dialog = Dialog(context)
-        
+
         // 시간 선택을 위한 기본 다이얼로그 사용
         val binding = ActivityDialogBinding.inflate(LayoutInflater.from(context))
         dialog.setContentView(binding.root)
@@ -170,6 +184,14 @@ class MedicineTimePlusAdapter(
             }
 
             dialog.dismiss()
+        }
+
+        dialog.setOnDismissListener {
+            val previouslyEditingPosition = editingPosition
+            editingPosition = -1
+            if (previouslyEditingPosition != -1) {
+                notifyItemChanged(previouslyEditingPosition)
+            }
         }
 
         dialog.show()
