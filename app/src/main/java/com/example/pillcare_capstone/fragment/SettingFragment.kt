@@ -51,6 +51,7 @@ class SettingFragment : Fragment() {
         }
         binding.settingChangePassword.setOnClickListener{
             val intent = Intent(requireActivity(), ChangePasswordActivity::class.java)
+            intent.putExtra("userId", userId)
             startActivity(intent)
         }
         binding.settingSetPushAlarm.setOnClickListener{

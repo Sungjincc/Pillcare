@@ -3,6 +3,7 @@ package com.example.pillcare_capstone.setting.change_password
 import android.app.Activity
 import android.os.Handler
 import android.os.Looper
+import android.util.Log
 import androidx.compose.foundation.layout.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -22,6 +23,7 @@ import com.example.pillcare_capstone.setting.components.CustomEditText
 import com.example.pillcare_capstone.setting.components.CustomText
 import com.example.pillcare_capstone.setting.components.CustomTitleText
 import com.example.pillcare_capstone.utils.DialogUtils
+import com.google.gson.Gson
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -37,11 +39,23 @@ fun ChangePasswordShow(navController: NavController, userId: Int) {
     val activity = context as? Activity
 
     LaunchedEffect(userId) {
-        val pwResponse = RetrofitClient.apiService.getUserPassword(userId)
-        if (pwResponse.isSuccessful) {
-            currentPassword = pwResponse.body()?.password ?: ""
+        try {
+            val pwResponse = RetrofitClient.apiService.getUserPassword(userId)
+            Log.d("PasswordResponse", "Code: ${pwResponse.code()}")
+            if (pwResponse.isSuccessful) {
+                val responseBody = pwResponse.body()
+                val jsonBody = Gson().toJson(responseBody)
+                Log.d("PasswordResponse", "Success Body: $jsonBody")
+                currentPassword = responseBody?.password ?: ""
+            } else {
+                val errorBody = pwResponse.errorBody()?.string()
+                Log.e("PasswordResponse", "Error Body: $errorBody")
+            }
+        } catch (e: Exception) {
+            Log.e("PasswordResponse", "Exception: ${e.message}")
         }
     }
+
 
     Column(
         modifier = Modifier
