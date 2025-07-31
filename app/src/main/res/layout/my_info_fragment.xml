@@ -20,7 +20,7 @@
             android:layout_margin="@dimen/spacing_md"
             app:cardCornerRadius="@dimen/corner_radius_lg"
             app:cardElevation="@dimen/elevation_level2"
-            app:cardBackgroundColor="?attr/colorPrimaryContainer">
+            app:cardBackgroundColor="@android:color/white">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
@@ -65,7 +65,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textAppearance="@style/TextAppearance.App.HeadlineMedium"
-                        android:textColor="?attr/colorOnPrimaryContainer"
+                        android:textColor="?attr/colorOnSurface"
                         android:textStyle="bold"
                         tools:text="김단국 님" />
 
@@ -76,7 +76,7 @@
                         android:layout_marginTop="@dimen/spacing_xs"
                         android:text="건강 관리 중"
                         android:textAppearance="@style/TextAppearance.App.BodyMedium"
-                        android:textColor="?attr/colorOnPrimaryContainer"
+                        android:textColor="?attr/colorOnSurfaceVariant"
                         android:alpha="0.8" />
 
                 </LinearLayout>
