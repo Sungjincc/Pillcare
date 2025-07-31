@@ -4,6 +4,7 @@ import android.app.Dialog
 import android.view.*
 import android.widget.CheckBox
 import android.widget.LinearLayout
+import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.pillcare_capstone.data_class.MedicineTimePlus
 import com.example.pillcare_capstone.databinding.ActivityDialogBinding
@@ -115,29 +116,35 @@ class MedicineTimePlusAdapter(
         hourPicker.setFormatter { i -> String.format("%02d", i) }
         minutePicker.setFormatter { i -> String.format("%02d", i) }
 
-        // 요일 선택 체크박스들 (간단하게 구현)
         val dayCheckBoxes = mutableMapOf<String, CheckBox>()
-        val dayContainer = LinearLayout(context).apply {
-            orientation = LinearLayout.HORIZONTAL
-            layoutParams = LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.MATCH_PARENT,
-                LinearLayout.LayoutParams.WRAP_CONTENT
-            )
-        }
 
+        // 요일 선택 체크박스들 (간단하게 구현)
+        val dayContainerLayout = binding.dayContainerLayout
         viewHolder.days.forEach { day ->
-            val checkBox = CheckBox(context).apply {
-                text = day
-                isChecked = timeList[position].selectedDays.contains(day)
-                layoutParams = LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f)
+            val dayLayout = LinearLayout(context).apply {
+                orientation = LinearLayout.VERTICAL
+                layoutParams = LinearLayout.LayoutParams(
+                    0,
+                    LinearLayout.LayoutParams.WRAP_CONTENT,
+                    1f
+                )
+                gravity = Gravity.CENTER_HORIZONTAL
             }
-            dayCheckBoxes[day] = checkBox
-            dayContainer.addView(checkBox)
-        }
 
-        // 다이얼로그에 요일 선택 추가 (기존 레이아웃 아래에)
-        val parentLayout = binding.root as ViewGroup
-        parentLayout.addView(dayContainer, parentLayout.childCount - 2) // 버튼들 위에 추가
+            val dayTextView = TextView(context).apply {
+                text = day
+                gravity = Gravity.CENTER
+            }
+
+            val checkBox = CheckBox(context).apply {
+                isChecked = timeList[position].selectedDays.contains(day)
+            }
+
+            dayLayout.addView(dayTextView)
+            dayLayout.addView(checkBox)
+            dayCheckBoxes[day] = checkBox
+            dayContainerLayout.addView(dayLayout)
+        }
 
         binding.goToPreviousPageButton.setOnClickListener {
             dialog.dismiss()
