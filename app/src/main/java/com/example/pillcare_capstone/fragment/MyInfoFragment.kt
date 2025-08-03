@@ -52,14 +52,6 @@ class MyInfoFragment : Fragment() {
         if (userId != -1) {
             loadUserInfo(userId)
         }
-
-        binding.editButton.setOnClickListener {
-            setEditMode(true)
-        }
-
-        binding.saveButton.setOnClickListener {
-            updateUserInfo(userId)
-        }
     }
 
     private fun loadUserInfo(userId: Int) {
@@ -88,61 +80,12 @@ class MyInfoFragment : Fragment() {
         binding.myInfoCareTargetNamePrintText.text = userInfo.careTargetName
         binding.myInfoCareTargetPhoneNumberPrintText.text = userInfo.careTargetPhoneNumber
 
-        binding.myInfoNameEditText.setText(userInfo.name)
-        binding.myInfoPhoneNumberEditText.setText(userInfo.phoneNumber)
-        binding.myInfoCareTargetNameEditText.setText(userInfo.careTargetName)
-        binding.myInfoCareTargetPhoneNumberEditText.setText(userInfo.careTargetPhoneNumber)
-
         memoList.clear()
         memoList.addAll(userInfo.guardianMemos?.map { m -> GuardianMemo(m.content) } ?: emptyList())
         guardianMemoAdapter.notifyDataSetChanged()
     }
 
-    private fun setEditMode(isEditing: Boolean) {
-        binding.myInfoNamePrintText.visibility = if (isEditing) View.GONE else View.VISIBLE
-        binding.myInfoNameEditText.visibility = if (isEditing) View.VISIBLE else View.GONE
 
-        binding.myInfoPhoneNumberPrintText.visibility = if (isEditing) View.GONE else View.VISIBLE
-        binding.myInfoPhoneNumberEditText.visibility = if (isEditing) View.VISIBLE else View.GONE
-
-        binding.myInfoCareTargetNamePrintText.visibility = if (isEditing) View.GONE else View.VISIBLE
-        binding.myInfoCareTargetNameEditText.visibility = if (isEditing) View.VISIBLE else View.GONE
-
-        binding.myInfoCareTargetPhoneNumberPrintText.visibility = if (isEditing) View.GONE else View.VISIBLE
-        binding.myInfoCareTargetPhoneNumberEditText.visibility = if (isEditing) View.VISIBLE else View.GONE
-
-        binding.editButton.visibility = if (isEditing) View.GONE else View.VISIBLE
-        binding.saveButton.visibility = if (isEditing) View.VISIBLE else View.GONE
-    }
-
-    private fun updateUserInfo(userId: Int) {
-        val name = binding.myInfoNameEditText.text.toString()
-        val phoneNumber = binding.myInfoPhoneNumberEditText.text.toString()
-        val careTargetName = binding.myInfoCareTargetNameEditText.text.toString()
-        val careTargetPhoneNumber = binding.myInfoCareTargetPhoneNumberEditText.text.toString()
-
-        val request = UpdateGuardianRequest(
-            name = name,
-            phoneNumber = phoneNumber,
-            careTargetName = careTargetName,
-            careTargetPhoneNumber = careTargetPhoneNumber
-        )
-
-        lifecycleScope.launch {
-            try {
-                val response = RetrofitClient.apiService.updateUserInfo(userId, request)
-                if (response.isSuccessful) {
-                    Toast.makeText(requireContext(), "정보가 성공적으로 수정되었습니다.", Toast.LENGTH_SHORT).show()
-                    loadUserInfo(userId) // Refresh user info
-                    setEditMode(false)
-                } else {
-                    Toast.makeText(requireContext(), "정보 수정에 실패했습니다.", Toast.LENGTH_SHORT).show()
-                }
-            } catch (e: Exception) {
-                Toast.makeText(requireContext(), "오류가 발생했습니다: ${e.message}", Toast.LENGTH_SHORT).show()
-            }
-        }
-    }
 
 
     override fun onDestroyView() {

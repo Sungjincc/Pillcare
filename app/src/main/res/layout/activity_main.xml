@@ -13,7 +13,7 @@
         android:id="@+id/topToolBar"
         android:layout_width="match_parent"
         android:layout_height="@dimen/toolbar_height"
-        android:background="@color/mainColor"
+        android:background="@android:color/white"
         android:elevation="@dimen/elevation_level1"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
@@ -68,7 +68,7 @@
             android:layout_gravity="center"
             android:text="@string/stringHome"
             android:textAppearance="@style/TextAppearance.App.TitleLarge"
-            android:textColor="?attr/colorOnSurface" />
+            android:textColor="@color/mainColor" />
 
         <!-- 알림 버튼 -->
         <com.google.android.material.button.MaterialButton
@@ -79,18 +79,28 @@
             android:layout_gravity="end"
             android:layout_marginEnd="@dimen/spacing_sm"
             android:contentDescription="@string/stringToolbarAlarmImageButton"
-            app:icon="@drawable/warning"
+            app:icon="@drawable/ic_warning"
             app:iconSize="@dimen/icon_size_md"
-            app:iconTint="?attr/colorOnSurface" />
+            app:iconTint="#F59E0B" />
 
     </com.google.android.material.appbar.MaterialToolbar>
+
+    <!-- 상단바 구분선 추가 -->
+    <View
+        android:id="@+id/topToolBarDivider"
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        android:background="#E0E0E0"
+        app:layout_constraintTop_toBottomOf="@id/topToolBar"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
 
     <FrameLayout
         android:id="@+id/mainContainer"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:background="@color/background_color"
-        app:layout_constraintTop_toBottomOf="@+id/topToolBar"
+        app:layout_constraintTop_toBottomOf="@+id/topToolBarDivider"
         app:layout_constraintBottom_toTopOf="@+id/bottomNavigationView"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
