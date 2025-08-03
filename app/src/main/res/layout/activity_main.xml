@@ -85,12 +85,22 @@
 
     </com.google.android.material.appbar.MaterialToolbar>
 
+    <!-- 상단바 구분선 추가 -->
+    <View
+        android:id="@+id/topToolBarDivider"
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        android:background="#E0E0E0"
+        app:layout_constraintTop_toBottomOf="@id/topToolBar"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
     <FrameLayout
         android:id="@+id/mainContainer"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:background="@color/background_color"
-        app:layout_constraintTop_toBottomOf="@+id/topToolBar"
+        app:layout_constraintTop_toBottomOf="@+id/topToolBarDivider"
         app:layout_constraintBottom_toTopOf="@+id/bottomNavigationView"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
