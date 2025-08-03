@@ -112,16 +112,26 @@
         android:visibility="gone"
         android:contentDescription="@string/medicinePlusButton" />
 
+    <!-- 구분선 추가 -->
+    <View
+        android:id="@+id/bottomNavDivider"
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        android:background="#E0E0E0"
+        app:layout_constraintBottom_toTopOf="@id/bottomNavigationView"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
     <!-- Material 3 Bottom Navigation -->
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottomNavigationView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="?attr/colorSurface"
+        android:background="@android:color/white"
         android:fitsSystemWindows="false"
         app:itemIconSize="24dp"
-        app:itemIconTint="?attr/colorOnSurfaceVariant"
-        app:itemTextColor="?attr/colorOnSurfaceVariant"
+        app:itemIconTint="@color/bottom_nav_green_selector"
+        app:itemTextColor="@color/bottom_nav_green_selector"
         app:labelVisibilityMode="unlabeled"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
