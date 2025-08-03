@@ -79,9 +79,9 @@
             android:layout_gravity="end"
             android:layout_marginEnd="@dimen/spacing_sm"
             android:contentDescription="@string/stringToolbarAlarmImageButton"
-            app:icon="@drawable/warning"
+            app:icon="@drawable/ic_warning"
             app:iconSize="@dimen/icon_size_md"
-            app:iconTint="?attr/colorOnSurface" />
+            app:iconTint="#F59E0B" />
 
     </com.google.android.material.appbar.MaterialToolbar>
 
