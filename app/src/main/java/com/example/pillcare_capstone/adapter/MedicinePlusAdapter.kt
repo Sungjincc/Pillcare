@@ -42,6 +42,7 @@ class MedicinePlusAdapter(
         val deleteMedicineButton = binding.deleteMedicineButton
         val saveMedicineButton = binding.saveMedicineButton
         val cardView = binding.cardView
+        lateinit var timeAdapter: MedicineTimePlusAdapter
         var isEditMode: Boolean = false
         val days = listOf("월", "화", "수", "목", "금", "토", "일")
 
@@ -62,10 +63,10 @@ class MedicinePlusAdapter(
             saveMedicineButton.visibility = View.GONE
             
             setMedicineTimeEfab.visibility = View.GONE
-            setMedicineTimeEfab.isClickable = false
-            medicineTimeRecyclerView.visibility = View.GONE
+            medicineTimeRecyclerView.visibility = View.VISIBLE
             isEditMode = false
             cardView.setCardBackgroundColor(Color.WHITE)
+            if(::timeAdapter.isInitialized) timeAdapter.setClickable(false)
         }
 
         // 수정 가능 기능
@@ -78,11 +79,10 @@ class MedicinePlusAdapter(
             saveMedicineButton.visibility = View.VISIBLE
             
             setMedicineTimeEfab.visibility = View.VISIBLE
-            setMedicineTimeEfab.isClickable = true
-            setMedicineTimeEfab.isEnabled = true
             medicineTimeRecyclerView.visibility = View.VISIBLE
             isEditMode = true
             cardView.setCardBackgroundColor(ContextCompat.getColor(itemView.context, R.color.md_theme_light_surface))
+            if(::timeAdapter.isInitialized) timeAdapter.setClickable(true)
         }
     }
 
@@ -124,8 +124,8 @@ class MedicinePlusAdapter(
         item.alarmTime = alarmTime
 
         // 약물 시간 리스트 설정
-        val timeAdapter = MedicineTimePlusAdapter(item.timeList, inflater, true)
-        viewHolder.medicineTimeRecyclerView.adapter = timeAdapter
+        viewHolder.timeAdapter = MedicineTimePlusAdapter(item.timeList, inflater, true)
+        viewHolder.medicineTimeRecyclerView.adapter = viewHolder.timeAdapter
         viewHolder.medicineTimeRecyclerView.layoutManager =
             LinearLayoutManager(holder.itemView.context)
         viewHolder.medicineTimeRecyclerView.isNestedScrollingEnabled = false
@@ -137,8 +137,6 @@ class MedicinePlusAdapter(
         } else {
             viewHolder.setDisableEditMode()
         }
-        viewHolder.medicineTimeRecyclerView.visibility = if (viewHolder.isEditMode) View.VISIBLE else View.GONE
-
 
         //약 복용 시간 버튼 클릭
         viewHolder.setMedicineTimeEfab.setOnClickListener {
@@ -146,7 +144,7 @@ class MedicinePlusAdapter(
             
             // 새로운 시간 추가
             item.timeList.add(MedicineTimePlus())
-            timeAdapter.notifyItemInserted(item.timeList.size - 1)
+            viewHolder.timeAdapter.notifyItemInserted(item.timeList.size - 1)
         }
 
         // 약 저장 버튼 클릭
@@ -159,8 +157,7 @@ class MedicinePlusAdapter(
             }
             
             viewHolder.setDisableEditMode()
-            timeAdapter.setClickable(false)
-
+            
             val schedules = mutableListOf<ScheduleTime>()
 
             // 추가된 시간들 처리
@@ -209,7 +206,6 @@ class MedicinePlusAdapter(
         //약 수정 버튼 클릭
         viewHolder.editMedicineButton.setOnClickListener {
             viewHolder.setEnableEditMode()
-            timeAdapter.setClickable(true)
         }
 
         //약 삭제 버튼 클릭
