@@ -13,7 +13,7 @@
         android:id="@+id/topToolBar"
         android:layout_width="match_parent"
         android:layout_height="@dimen/toolbar_height"
-        android:background="@color/mainColor"
+        android:background="@android:color/white"
         android:elevation="@dimen/elevation_level1"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
@@ -68,7 +68,7 @@
             android:layout_gravity="center"
             android:text="@string/stringHome"
             android:textAppearance="@style/TextAppearance.App.TitleLarge"
-            android:textColor="?attr/colorOnSurface" />
+            android:textColor="@color/mainColor" />
 
         <!-- 알림 버튼 -->
         <com.google.android.material.button.MaterialButton
