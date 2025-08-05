@@ -50,7 +50,6 @@ fun ChangeMyInfoShow(navController: NavController, userId: Int) {
 
     LaunchedEffect(userId) {
         val response = RetrofitClient.apiService.getUserInfo(userId)
-        val pwResponse = RetrofitClient.apiService.getUserPassword(userId)
         if (response.isSuccessful) {
             val user = response.body()
             user?.let {
@@ -61,9 +60,7 @@ fun ChangeMyInfoShow(navController: NavController, userId: Int) {
                 careTargetPhoneNumber = it.careTargetPhoneNumber
             }
         }
-        if (pwResponse.isSuccessful) {
-            password = pwResponse.body()?.password ?: ""
-        }
+        password = "******"
     }
 
 

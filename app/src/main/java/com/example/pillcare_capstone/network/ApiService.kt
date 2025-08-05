@@ -8,7 +8,7 @@ import com.example.pillcare_capstone.data_class.LoginResponse
 import com.example.pillcare_capstone.data_class.MedicineScheduleListResponse
 import com.example.pillcare_capstone.data_class.MedicineScheduleRequest
 import com.example.pillcare_capstone.data_class.MedicineScheduleUpdateRequest
-import com.example.pillcare_capstone.data_class.PasswordResponse
+import com.example.pillcare_capstone.data_class.PasswordCheckRequest
 import com.example.pillcare_capstone.data_class.ResetPasswordRequest
 import com.example.pillcare_capstone.data_class.TokenRequest
 import com.example.pillcare_capstone.data_class.UpdateCareTargetRequest
@@ -73,11 +73,12 @@ interface ApiService {
         @Body request: UpdateCareTargetRequest
     ): Response<Void>
 
-    //비밀번호 조회
-    @GET("/api/guardian/password/{userId}")
-    suspend fun getUserPassword(
-        @Path("userId") userId: Int
-    ): Response<PasswordResponse>
+    //비밀번호 검증
+    @POST("/api/guardian/password/{userId}")
+    suspend fun checkPassword(
+        @Path("userId") userId: Int,
+        @Body request: PasswordCheckRequest
+    ): Response<Boolean>
 
     //비밀번호 수정
     @PUT("/api/guardian/password/{userId}")
