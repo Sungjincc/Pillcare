@@ -16,6 +16,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import com.example.pillcare_capstone.data_class.PasswordCheckRequest
 import com.example.pillcare_capstone.data_class.ResetPasswordRequest
 import com.example.pillcare_capstone.network.RetrofitClient
 import com.example.pillcare_capstone.setting.components.CustomButton
@@ -33,28 +34,9 @@ fun ChangePasswordShow(navController: NavController, userId: Int) {
     var beforePassword by remember { mutableStateOf("") }
     var newPassword by remember { mutableStateOf("") }
     var confirmNewPassword by remember { mutableStateOf("") }
-    var currentPassword by remember { mutableStateOf("") }
 
     val context = LocalContext.current
     val activity = context as? Activity
-
-    LaunchedEffect(userId) {
-        try {
-            val pwResponse = RetrofitClient.apiService.getUserPassword(userId)
-            Log.d("PasswordResponse", "Code: ${pwResponse.code()}")
-            if (pwResponse.isSuccessful) {
-                val responseBody = pwResponse.body()
-                val jsonBody = Gson().toJson(responseBody)
-                Log.d("PasswordResponse", "Success Body: $jsonBody")
-                currentPassword = responseBody?.password ?: ""
-            } else {
-                val errorBody = pwResponse.errorBody()?.string()
-                Log.e("PasswordResponse", "Error Body: $errorBody")
-            }
-        } catch (e: Exception) {
-            Log.e("PasswordResponse", "Exception: ${e.message}")
-        }
-    }
 
 
     Column(
@@ -104,11 +86,11 @@ fun ChangePasswordShow(navController: NavController, userId: Int) {
 
             CustomButton(onClick = {
                 when {
-                    beforePassword != currentPassword -> {
+                    beforePassword.isEmpty() -> {
                         DialogUtils.showAlertDialog(
                             context,
                             title = "오류",
-                            message = "기존 비밀번호가 일치하지 않습니다."
+                            message = "기존 비밀번호를 입력해주세요."
                         )
                     }
                     newPassword != confirmNewPassword -> {
@@ -127,27 +109,64 @@ fun ChangePasswordShow(navController: NavController, userId: Int) {
                     }
                     else -> {
                         CoroutineScope(Dispatchers.IO).launch {
-                            val result = RetrofitClient.apiService.resetPassword(
-                                userId = userId,
-                                request = ResetPasswordRequest(newPassword)
-                            )
-                            Handler(Looper.getMainLooper()).post {
-                                if (result.isSuccessful) {
+                            try {
+                                // 먼저 기존 비밀번호 검증
+                                val checkResult = RetrofitClient.apiService.checkPassword(
+                                    userId = userId,
+                                    request = PasswordCheckRequest(beforePassword)
+                                )
+                                
+                                Log.d("PasswordCheck", "Response Code: ${checkResult.code()}")
+                                Log.d("PasswordCheck", "Is Successful: ${checkResult.isSuccessful}")
+                                Log.d("PasswordCheck", "Response Body: ${checkResult.body()}")
+                                
+                                Handler(Looper.getMainLooper()).post {
+                                    if (checkResult.isSuccessful && checkResult.body() == true) {
+                                        // 비밀번호가 일치하면 새 비밀번호로 변경
+                                        CoroutineScope(Dispatchers.IO).launch {
+                                            val result = RetrofitClient.apiService.resetPassword(
+                                                userId = userId,
+                                                request = ResetPasswordRequest(newPassword)
+                                            )
+                                            Handler(Looper.getMainLooper()).post {
+                                                if (result.isSuccessful) {
+                                                    DialogUtils.showAlertDialog(
+                                                        context,
+                                                        title = "완료",
+                                                        message = "비밀번호가 변경되었습니다."
+                                                    )
+                                                    navController.navigate("change_password_success")
+                                                    Handler(Looper.getMainLooper()).postDelayed({
+                                                        navController.popBackStack()
+                                                        activity?.finish()
+                                                    }, 2000)
+                                                } else {
+                                                    DialogUtils.showAlertDialog(
+                                                        context,
+                                                        title = "실패",
+                                                        message = "변경 실패. 다시 시도해주세요."
+                                                    )
+                                                }
+                                            }
+                                        }
+                                    } else {
+                                        DialogUtils.showAlertDialog(
+                                            context,
+                                            title = "오류",
+                                            message = "기존 비밀번호가 일치하지 않습니다."
+                                        )
+                                    }
+                                }
+                            } catch (e: Exception) {
+                                Log.e("PasswordCheck", "Exception occurred: ${e.message}")
+                                Log.e("PasswordCheck", "Exception type: ${e.javaClass.simpleName}")
+                                Log.e("PasswordCheck", "Stack trace: ${e.stackTraceToString()}")
+                                
+                                Handler(Looper.getMainLooper()).post {
                                     DialogUtils.showAlertDialog(
                                         context,
-                                        title = "완료",
-                                        message = "비밀번호가 변경되었습니다."
-                                    )
-                                    navController.navigate("change_password_success")
-                                    Handler(Looper.getMainLooper()).postDelayed({
-                                        navController.popBackStack()
-                                        activity?.finish()
-                                    }, 2000)
-                                } else {
-                                    DialogUtils.showAlertDialog(
-                                        context,
-                                        title = "실패",
-                                        message = "변경 실패. 다시 시도해주세요."
+                                        title = "오류",
+                                        message = "네트워크 오류가 발생했습니다.\n${e.message}"
                                     )
                                 }
                             }
