@@ -6,7 +6,6 @@ import android.os.Looper
 import android.util.Log
 import androidx.compose.foundation.layout.*
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -104,7 +103,7 @@ fun ChangePasswordShow(navController: NavController, userId: Int) {
                         DialogUtils.showAlertDialog(
                             context,
                             title = "오류",
-                            message = "비밀번호는 최소 6자 이상이어야 합니다."
+                            message = "비밀번호는 최소 6자 이상 이어야 합니다."
                         )
                     }
                     else -> {
