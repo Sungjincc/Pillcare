@@ -1,6 +1,7 @@
 package com.example.pillcare_capstone.setting.change_password
 
 import android.app.Activity
+import android.content.Intent
 import android.os.Handler
 import android.os.Looper
 import android.util.Log
@@ -17,6 +18,7 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.pillcare_capstone.data_class.PasswordCheckRequest
 import com.example.pillcare_capstone.data_class.ResetPasswordRequest
+import com.example.pillcare_capstone.login.LoginActivity
 import com.example.pillcare_capstone.network.RetrofitClient
 import com.example.pillcare_capstone.setting.components.CustomButton
 import com.example.pillcare_capstone.setting.components.CustomEditText
@@ -129,14 +131,21 @@ fun ChangePasswordShow(navController: NavController, userId: Int) {
                                             )
                                             Handler(Looper.getMainLooper()).post {
                                                 if (result.isSuccessful) {
+                                                    // 비밀번호 변경 성공 시 로그아웃 처리
+                                                    val prefs = context.getSharedPreferences("user", android.content.Context.MODE_PRIVATE)
+                                                    prefs.edit().clear().apply() // 모든 사용자 정보 삭제
+                                                    
                                                     DialogUtils.showAlertDialog(
                                                         context,
                                                         title = "완료",
-                                                        message = "비밀번호가 변경되었습니다."
+                                                        message = "비밀번호가 변경되었습니다.\n보안을 위해 자동으로 로그아웃됩니다."
                                                     )
-                                                    navController.navigate("change_password_success")
+                                                    
+                                                    // 2초 후 로그인 화면으로 이동
                                                     Handler(Looper.getMainLooper()).postDelayed({
-                                                        navController.popBackStack()
+                                                        val intent = Intent(context, LoginActivity::class.java)
+                                                        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                                                        context.startActivity(intent)
                                                         activity?.finish()
                                                     }, 2000)
                                                 } else {
