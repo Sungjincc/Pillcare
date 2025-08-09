@@ -22,7 +22,7 @@ fun ChangeSuccess() {
         verticalArrangement = Arrangement.Center
     ) {
         Text(
-            text = "변경 완료!",
+            text = "변경 완료",
             fontWeight = FontWeight.Bold,
             fontSize = 25.sp
         )
