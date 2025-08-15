@@ -23,7 +23,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintVertical_bias="0.15"
             android:text="@string/pillCare"
-            android:textSize="60dp"
+            android:textSize="65dp"
             android:textColor="@color/mainColor"
             android:shadowColor="@color/black"
             android:shadowDx="5.0"
